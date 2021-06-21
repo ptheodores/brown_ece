@@ -1,5 +1,5 @@
 # Compiler stff
-CPP?=clang++
+CPP=g++
 CPPFLAGS?=-g -Wall -Werror -D CBF -std=c++11 -O2 
 
 # Source File stuff
