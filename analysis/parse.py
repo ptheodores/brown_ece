@@ -33,11 +33,17 @@ def parse_2hc(segment):
 
     return second_hit
 
+def parse_latency(segment):
+    latency = {}
+
+    return latency
+
 # A dictionary that holds all the different parsing functions
 POLICY_FUNC = {
     "lru": parse_lru,
     "2hc": parse_2hc,
     "2hc_rot": parse_2hc, #NOTE: uses same func
+    "latency": parse_latency
     }
 ###########################
 
