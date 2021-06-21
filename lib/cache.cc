@@ -80,9 +80,9 @@ bool Cache::process(item_packet* ip_inst){
 
 
     // Actually Check the cache
-    if (!check(cache_key, ip_inst->size, ip_inst->ts, penalize_url,
+    if (!check(cache_key,  penalize_url,
                0, // customer id for penalize url
-               ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url)){
+              ip_inst)){
 
         //Miss!
 
@@ -96,8 +96,7 @@ bool Cache::process(item_packet* ip_inst){
             // Call the next gues process function
             // If they add it, we add it
             if (next->process(ip_inst) == true) {
-                return add(cache_key, ip_inst->size, ip_inst->ts, penalize_url,
-                           0, ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url);
+                return add(cache_key, penalize_url, 0, ip_inst);
             } else {
                 // You might turn this on if your first cache is a kernel cache, etc.
                 if (respect_lower_admission == true) {
@@ -107,17 +106,14 @@ bool Cache::process(item_packet* ip_inst){
                 }
                 else {
                     // Lower level didn't take it, but we will (might)
-                    return add(cache_key, ip_inst->size, ip_inst->ts, penalize_url,
-                               0, ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url);
-                }
+                    return add(cache_key, penalize_url, 0, ip_inst);                }
             }
         }
         else {
             // We were the last stand! origin pull!
             reads_from_origin += ip_inst->size;
             // Add it (or do whatever the policy says)
-            return add(cache_key, ip_inst->size, ip_inst->ts, penalize_url,
-                       0, ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url);
+            return  add(cache_key, penalize_url, 0, ip_inst); 
         }
     }
     else {
@@ -294,38 +290,38 @@ void Cache::reset_disk_counters()
     size_of_purges = 0;
 }
 
-bool Cache::check(string url, unsigned long size, unsigned long ts,  bool penalize_url,
-        int customer_id, unsigned long bytes_out, string customer_id_str, string orig_url)
+bool Cache::check(string url, bool penalize_url,
+        int customer_id, item_packet* ip_inst)
 {
     // This should check its own contents, call out to Admission and Eviction to 
     // let them know (ie update LRU) and then return the value
 
 
-    if(eviction->check(url, ts)) { // found
+    if(eviction->check(url, ip_inst->ts)) { // found
         //kc->add(url,size, ts, bytes_out, customer_id_str);
-        eviction->get(url, ts, bytes_out, customer_id_str);
-        number_of_reads += (size / number_of_bytes_per_read) + 1;
+        eviction->get(url, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id);
+        number_of_reads += (ip_inst->size / number_of_bytes_per_read) + 1;
         return true;
     }
 
     return false;
 }
 
-bool Cache::add(string url, unsigned long size, unsigned long ts,  bool penalize_url,
-        int customer_id, unsigned long bytes_out, string customer_id_str, string orig_url)
+bool Cache::add(string url, bool penalize_url,
+        int customer_id, item_packet* ip_inst)
 {
     // We should ask the admission policy if we should allow it. If not,
     //  return now, otherwise, put it in the cache
-    if (!admission->check(url, bytes_out, size, ts, customer_id_str)) {
+    if (!admission->check(url, ip_inst->bytes_out, ip_inst->size, ip_inst->ts, ip_inst->customer_id)) {
         // Didn't have it, don't add it!
         return false;
     } else {
     // Otherwise, go ahead and let it in
         if(store_access_line_and_url)
-            eviction->put(url, size, ts, bytes_out, customer_id_str, orig_url);
+            eviction->put(url, ip_inst->size, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url);
         else
-            eviction->put(url, size, ts, bytes_out, customer_id_str, "NA");
-        number_of_writes += (size / number_of_bytes_per_write) + 1;
+            eviction->put(url, ip_inst->size, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id, "NA");
+        number_of_writes += (ip_inst->size / number_of_bytes_per_write) + 1;
         return true;
     }
 }

@@ -93,12 +93,10 @@ class Cache {
         void reset_disk_counters();
 
         // Cache Interaction
-        bool check(std::string url, unsigned long size, unsigned long ts, bool penalize_url,
-                int customer_id, unsigned long bytes_out, std::string
-                customer_id_str, std::string orig_url); // uses new LRU function
-        bool add(std::string url, unsigned long size, unsigned long ts, bool penalize_url,
-                int customer_id, unsigned long bytes_out, std::string
-                customer_id_str, std::string orig_url); // uses new LRU function
+        bool check(std::string url, bool penalize_url,
+                int customer_id, item_packet* ip_inst); // uses new LRU function
+        bool add(std::string url, bool penalize_url,
+                int customer_id, item_packet* ip_inst); // uses new LRU function
 
         // Reporting!
         void periodic_output(unsigned long ts, std::ostringstream& outlogfile);
