@@ -18,8 +18,7 @@ class SizeAdmission : public CacheAdmission {
         SizeAdmission(unsigned long long threshold);
         ~SizeAdmission();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
         float get_fill_percentage();
         // Reporting
         void periodic_output(unsigned long ts, std::ostringstream& outlogfile);
@@ -36,8 +35,7 @@ class ProbAdmission : public CacheAdmission {
         ProbAdmission(double threshold);
         ~ProbAdmission();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
 
         float get_fill_percentage();
         // Reporting
@@ -54,8 +52,7 @@ class ProbSizeAdmission : public CacheAdmission {
         ProbSizeAdmission(unsigned long long threshold);
         ~ProbSizeAdmission();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
 
         float get_fill_percentage();
         // Reporting

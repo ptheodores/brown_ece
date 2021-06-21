@@ -28,15 +28,14 @@ LatencyAdmission::LatencyAdmission(double lower, double upper) {
 LatencyAdmission::~LatencyAdmission() {
 }
 
-bool LatencyAdmission::check(string key, unsigned long data, unsigned long long size,
-                          unsigned long ts, string customer_id_str) {
+bool LatencyAdmission::check(string key, item_packet* ip_inst) {
     // admit item if and only if the latency is within bounds
     // if latency is low, will be too fast to care
     // if latency is high, will be too fast to care
     // time_t now = time(NULL);
-    double latency = data;
-    cerr << "latency: " << data << "\n";
-    return latency <= this->upper && latency >= this->lower;
+    //double latency = (double) ip_inst->rtt;
+    cerr << "latency: " << ip_inst->rtt << "\n";
+    return ip_inst->rtt <= this->upper && ip_inst->rtt >= this->lower;
 }
 
 float LatencyAdmission::get_fill_percentage() {

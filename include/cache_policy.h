@@ -12,6 +12,9 @@
 #ifndef CACHE_POLICY_H_
 #define CACHE_POLICY_H_
 
+//struct item_packet;
+#include "status.h"
+
 class CacheAdmission {
     protected:
         std::string name;
@@ -19,8 +22,7 @@ class CacheAdmission {
     public:
         virtual ~CacheAdmission();
         // Is this key present?
-        virtual bool check(std::string key, unsigned long data, unsigned long long size,
-                           unsigned long ts, std::string customer_id_str)=0;
+        virtual bool check(std::string key, item_packet* ip_inst)=0;
         // Reporting
         virtual void periodic_output(unsigned long ts, std::ostringstream& outlogfile)=0;
 };

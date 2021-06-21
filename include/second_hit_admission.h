@@ -28,8 +28,7 @@ class SecondHitAdmission : public CacheAdmission {
                     std::vector<std::string> no_bf_cust);
         ~SecondHitAdmission();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
 	    bool check_customer_in_list(std::string custid) const;
 
         float get_fill_percentage();
@@ -79,8 +78,7 @@ class SecondHitAdmissionRot : public CacheAdmission {
                     unsigned long max_age);
         ~SecondHitAdmissionRot();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
 	    bool check_customer_in_list(std::string custid) const;
 
         float get_fill_percentage();

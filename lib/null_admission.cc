@@ -30,8 +30,7 @@ NullAdmission::~NullAdmission() {
 }
 
 // Should we let this in?
-bool NullAdmission::check(string key, unsigned long data, unsigned long long size,
-                          unsigned long ts, string customer_id_str) {
+bool NullAdmission::check(string key, item_packet* ip_inst) {
     // Admit everything
     return true;
 }

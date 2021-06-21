@@ -30,13 +30,12 @@ SecondHitAdmission::~SecondHitAdmission() {
 }
 
 // Should we let this in?
-bool SecondHitAdmission::check(string key, unsigned long data, unsigned long long size,
-                               unsigned long ts, string customer_id_str) {
+bool SecondHitAdmission::check(string key, item_packet* ip_inst) {
 
 
     // Check to see if this customer bypasses the bloom filter. If so, just let
     // it in
-    bool _b = check_customer_in_list(customer_id_str);
+    bool _b = check_customer_in_list(ip_inst->customer_id);
     if (_b == true) {
         return true;
     }
@@ -124,15 +123,14 @@ SecondHitAdmissionRot::~SecondHitAdmissionRot() {
 }
 
 // Should we let this in?
-bool SecondHitAdmissionRot::check(string key, unsigned long data, unsigned long long size,
-                               unsigned long ts, string customer_id_str) {
+bool SecondHitAdmissionRot::check(string key, item_packet* ip_inst) {
 
     BFEntry* new_bf;
     unsigned long age;
 
     // Check to see if this customer bypasses the bloom filter. If so, just let
     // it in
-    bool _b = check_customer_in_list(customer_id_str);
+    bool _b = check_customer_in_list(ip_inst->customer_id);
     if (_b == true) {
         return true;
     }
@@ -140,9 +138,9 @@ bool SecondHitAdmissionRot::check(string key, unsigned long data, unsigned long 
     /* Check the age on the head, is it time to rotate */
     if (head->init_time == 0) {
         /* If it was the init, take the current time as the start */
-        head->init_time = ts;
+        head->init_time = ip_inst->ts;
     }
-    age = ts - head->init_time;
+    age = ip_inst->ts - head->init_time;
     /* It's time to rotate*/
     if (age > max_age) {
         // Check the next guy, delete him if he exists
@@ -156,7 +154,7 @@ bool SecondHitAdmissionRot::check(string key, unsigned long data, unsigned long 
         // Make a new one and stick it at the head
         new_bf = new BFEntry;
         new_bf->BF = new BloomFilter ((char *)file_name.c_str(), _nfuncs, bf_size, _NVAL);
-        new_bf->init_time = ts; // Now
+        new_bf->init_time = ip_inst->ts; // Now
         new_bf->next = head;
         // stick it in front
         head = new_bf;

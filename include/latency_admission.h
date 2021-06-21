@@ -14,8 +14,7 @@ class LatencyAdmission : public CacheAdmission {
         LatencyAdmission(double lower, double upper);
         ~LatencyAdmission();
 
-        bool check(std::string key, unsigned long data, unsigned long long size,
-                   unsigned long ts, std::string customer_id_str);
+        bool check(std::string key, item_packet* ip_inst);
         float get_fill_percentage();
 
         // Reporting

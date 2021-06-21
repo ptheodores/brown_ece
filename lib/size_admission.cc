@@ -33,9 +33,8 @@ SizeAdmission::~SizeAdmission() {
 }
 
 // Should we let this in?
-bool SizeAdmission::check(string key, unsigned long data, unsigned long long size,
-                          unsigned long ts, string customer_id_str) {
-    if (size < threshold) {
+bool SizeAdmission::check(string key, item_packet* ip_inst) {
+    if (ip_inst->size < threshold) {
         return true;
     }
 
@@ -63,8 +62,7 @@ ProbAdmission::~ProbAdmission() {
 }
 
 // Should we let this in?
-bool ProbAdmission::check(string key, unsigned long data, unsigned long long size,
-                          unsigned long ts, string customer_id_str) {
+bool ProbAdmission::check(string key, item_packet* ip_inst) {
 
     // Compute the probability of admission 
     double r = 0.0;
@@ -101,12 +99,11 @@ ProbSizeAdmission::~ProbSizeAdmission() {
 }
 
 // Should we let this in?
-bool ProbSizeAdmission::check(string key, unsigned long data, unsigned long long size,
-                          unsigned long ts, string customer_id_str) {
+bool ProbSizeAdmission::check(string key, item_packet* ip_inst) {
 
     // First we need to change the type of the size
 
-    double d_size = (double) size;
+    double d_size = (double) ip_inst->size;
 
     // Compute the probability of admission 
     double prob = 0.0;

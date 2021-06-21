@@ -312,7 +312,7 @@ bool Cache::add(string url, bool penalize_url,
 {
     // We should ask the admission policy if we should allow it. If not,
     //  return now, otherwise, put it in the cache
-    if (!admission->check(url, ip_inst->bytes_out, ip_inst->size, ip_inst->ts, ip_inst->customer_id)) {
+    if (!admission->check(url, ip_inst)) {
         // Didn't have it, don't add it!
         return false;
     } else {

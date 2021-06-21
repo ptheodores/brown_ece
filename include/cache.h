@@ -11,9 +11,11 @@
 #ifndef CACHE_H_
 #define CACHE_H_
 
-struct item_packet;
+//struct item_packet;
+#include "status.h"
 class CacheAdmission;
 class CacheEviction;
+//#include "cache_policy.h"
 
 class Cache {
     private:
