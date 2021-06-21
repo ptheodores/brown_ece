@@ -404,6 +404,10 @@ int Emulator::process_access_log_line(string log_line) {
         ip_inst.url = vecSpltLine.at(5);
         ip_inst.customer_id = "NA";
 
+		//added to store rtt and region
+		ip_inst.rtt = atol(vecSpltLine.at(6).c_str());
+		ip_inst.region = atoi(vecSpltLine.at(7).c_str());
+
         // EMULATOR LOGIC BEGINS
         // This basically catches anyhting that passed data through
         if (ip_inst.url.size()

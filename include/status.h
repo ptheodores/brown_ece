@@ -18,6 +18,8 @@ struct item_packet {
     std::string status_code_full;
     std::string status_code_string;
     int status_code_number;
+    unsigned long rtt;
+    unsigned int region;
 };
 
 struct cache_stat_packet {
