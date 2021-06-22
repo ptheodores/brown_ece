@@ -46,5 +46,6 @@ float LatencyAdmission::get_fill_percentage() {
 
 void LatencyAdmission::periodic_output(unsigned long ts, std::ostringstream& outlogfile){
     // Just output the marker and move on
-    outlogfile << " : " << name << " ";
+    //not sure we are doing anything with this right now, but we have it as an option to use?
+    //outlogfile << " : " << name << " ";
 }
