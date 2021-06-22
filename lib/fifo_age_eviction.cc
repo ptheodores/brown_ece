@@ -254,7 +254,7 @@ void FIFOAgeEviction::print_oldest_file_age_for_monitored_customers(unsigned lon
     cout << endl;
 }
 
-unsigned long long FIFOAgeEviction::put(string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out, string customer_id, string orig_url)
+unsigned long long FIFOAgeEviction::put(string key, item_packet* ip_inst, string orig_url)
 {
     FIFOEvictionEntry* node = _mapping[key];
     if(node)
@@ -263,16 +263,16 @@ unsigned long long FIFOAgeEviction::put(string key, unsigned long data, unsigned
     }
     else
     {
-        current_ingress_item_timestamp = timestamp;
+        current_ingress_item_timestamp = ip_inst->ts;
         if(sci->print_hdd_ingress_stats) {
             ingress_total_count++;
-            ingress_total_size += data;
+            ingress_total_size += ip_inst->size;
 
-            if(timestamp - previous_hour_timestamp_ingress > 3600) {
-                previous_hour_timestamp_ingress = timestamp;
+            if(ip_inst->ts - previous_hour_timestamp_ingress > 3600) {
+                previous_hour_timestamp_ingress = ip_inst->ts;
 
                 cout << "\nprint_hourly_hdd_ingress_stats "
-                    << timestamp << " "
+                    << ip_inst->ts << " "
                     << ingress_total_count << " "
                     << ingress_total_size << " "
                     << "\n";
@@ -283,9 +283,9 @@ unsigned long long FIFOAgeEviction::put(string key, unsigned long data, unsigned
 
         node = new FIFOEvictionEntry;
         node->key = key;
-        node->data = data;
-        node->timestamp = timestamp;
-        node->customer_id = customer_id;
+        node->data = ip_inst->size;
+        node->timestamp = ip_inst->ts;
+        node->customer_id = ip_inst->customer_id;
         node->orig_url = orig_url;
         node->count = 1;
         _mapping[key] = node;

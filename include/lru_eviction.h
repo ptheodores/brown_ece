@@ -81,7 +81,7 @@ class LRUEviction : public CacheEviction {
         void hourly_purging(unsigned long timestamp);
 
         // Put things in the cache
-        unsigned long long put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out, std::string customer_id, std::string orig_url);
+        unsigned long long put(std::string key, item_packet* ip_inst, std::string orig_url);
         // "fetch" an object from the cache
         unsigned long get(std::string key, unsigned long ts, unsigned long bytes_out, std::string url_original);
         // Check if its present

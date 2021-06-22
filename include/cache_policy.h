@@ -36,8 +36,9 @@ class CacheEviction {
 
 
         // Put an object in the cache
-        virtual unsigned long long put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out,
-                               std::string customer_id, std::string orig_url)=0;
+        //virtual unsigned long long put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out,
+                              // std::string customer_id, std::string orig_url)=0;
+    	virtual unsigned long long put(std::string key, item_packet* ip_inst, std::string orig_url)=0;
         // Get an object from the cache
         virtual unsigned long get(std::string key, unsigned long ts,
                                   unsigned long bytes_out, std::string url_original)=0;
