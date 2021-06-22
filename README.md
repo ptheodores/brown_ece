@@ -62,7 +62,7 @@ The ECE comes with a ready made set of cache admission (probabilistic,
 second-hit caching) and eviction (LRU, FIFO, S4LRU) policies. To run a ready
 made example script will perform an example using Second-Hit Caching and LRU:
 
-``` ./run_em.sh <log directory> 2hc_lru ```
+``` ./run_em.sh <log directory> ./bin/2hc_lru ```
 
 Where `<log directory>` is a directory containing logs of the appropriate
 format.  Sample logs are provided in the directory `input_request_sequence`.
@@ -73,6 +73,10 @@ A script is included that provides a simple plot of the hit rates, along with
 examples of how to parse the output format. Please note, this script requires matplotlib and numpy - they are not required for the emulator itself. Run this script with the following command:
 
 `python analysis/parse.py out/<timestamp>/`
+
+* At the moment, the following policies are runnable from ./bin:
+1. lat_lru (latency admission, lru eviction)
+2. lru_2hc (second hit caching admission, lru eviction)
 
 ### Data
 
