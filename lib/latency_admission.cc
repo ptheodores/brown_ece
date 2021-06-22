@@ -34,7 +34,9 @@ bool LatencyAdmission::check(string key, item_packet* ip_inst) {
     // if latency is high, will be too fast to care
     // time_t now = time(NULL);
     //double latency = (double) ip_inst->rtt;
-    cerr << "latency: " << ip_inst->rtt << "\n";
+
+    //verbose: print latency at each check
+    //cerr << "latency: " << ip_inst->rtt << "\n";
     return ip_inst->rtt <= this->upper && ip_inst->rtt >= this->lower;
 }
 
