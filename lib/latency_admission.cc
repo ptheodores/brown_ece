@@ -49,3 +49,46 @@ void LatencyAdmission::periodic_output(unsigned long ts, std::ostringstream& out
     //not sure we are doing anything with this right now, but we have it as an option to use?
     //outlogfile << " : " << name << " ";
 }
+
+/***************************************************************/
+
+/* Prob. Size Based Admission */
+ProbSizeAdmission::ProbLatencyAdmission(unsigned long long c) {
+    name = "prob_lat";
+    this->c = c;
+}
+
+ProbSizeAdmission::~ProbLatencyAdmission() {
+}
+
+// Should we let this in?
+bool ProbLatencyAdmission::check(string key, item_packet* ip_inst) {
+
+    // First we need to change the type of the size
+
+    double d_size = (double) ip_inst->size;
+
+    // Compute the probability of admission
+    double prob = 0.0;
+    double r = 0.0;
+
+    prob = 1.0 / exp( d_size / (double)c);
+
+    // Flip a coin check the number
+    r = ((double) rand() / (RAND_MAX));
+
+    if (r < prob) {
+        return true;
+    }
+
+    return false;
+}
+
+float ProbLatencyAdmission::get_fill_percentage() {
+    return 0;
+}
+
+void ProbLatencyAdmission::periodic_output(unsigned long ts, std::ostringstream& outlogfile){
+    // Just output the marker and move on
+    outlogfile << " : " << name << " ";
+}

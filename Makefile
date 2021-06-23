@@ -1,6 +1,6 @@
 # Compiler stff
 CPP=g++
-CPPFLAGS?=-g -Wall -Werror -D CBF -std=c++11 -O2 
+CPPFLAGS?=-g -Wall -Werror -D CBF -std=c++11 -O2 -pthread 
 
 # Source File stuff
 INCDIR=include

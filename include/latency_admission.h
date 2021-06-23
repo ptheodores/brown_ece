@@ -25,5 +25,23 @@ class LatencyAdmission : public CacheAdmission {
         double upper;
 };
 
+class ProbLatencyAdmission : public CacheAdmission {
+
+    public:
+        ProbLatencyAdmission(double lower, double upper);
+        ~ProbLatencyAdmission();
+
+        bool check(std::string key, item_packet* ip_inst);
+        float get_fill_percentage();
+
+        // Reporting
+        void periodic_output(unsigned long ts, std::ostringstream& outlogfile);
+
+    private:
+        double lower;
+        double upper;
+        unsigned long long c;
+};
+
 
 #endif
