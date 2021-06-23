@@ -88,7 +88,7 @@ class S4LRUEviction : public CacheEviction {
         // to pre-populate the cache (from cache dump)
         unsigned long long initial_put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out,
                             std::string customer_id, std::string orig_url, std::string access_log_entry_string);
-        unsigned long long put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out, std::string customer_id, std::string orig_url);
+        unsigned long long put(std::string key, item_packet* ip_inst, std::string orig_url);
 
         unsigned long get(std::string key, unsigned long ts, unsigned long bytes_out, std::string url_original);
         int check_and_print(std::string key);	// to check if present.

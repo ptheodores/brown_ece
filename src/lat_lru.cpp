@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 
     // Let's make a hard drive
     Cache* hd = new Cache(0, false, false, hd_max_size_gig);
-    CacheAdmission* hd_ad = new LatencyAdmission(20, 2000);
+    CacheAdmission* hd_ad = new LatencyAdmission(25, 75);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* hd_evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     hd->set_admission(hd_ad);

@@ -89,7 +89,7 @@ class FIFOEviction : public CacheEviction {
                             std::string customer_id, std::string orig_url, std::string access_log_entry_string);
         void print_oldest_file_age(unsigned long timestamp, std::ostream &output);
         void print_oldest_file_age_for_monitored_customers(unsigned long currentTimeStamp);
-        unsigned long long put(std::string key, unsigned long data, unsigned long timestamp, unsigned long bytes_out, std::string customer_id, std::string orig_url);
+        unsigned long long put(std::string key, item_packet* ip_inst, std::string orig_url);
 
         void print_avg_oldest_requested_file(unsigned long timestamp);
         unsigned long get(std::string key, unsigned long ts, unsigned long bytes_out, std::string url_original);

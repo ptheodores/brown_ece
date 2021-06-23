@@ -318,9 +318,10 @@ bool Cache::add(string url, bool penalize_url,
     } else {
     // Otherwise, go ahead and let it in
         if(store_access_line_and_url)
-            eviction->put(url, ip_inst->size, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id, ip_inst->url);
+            eviction->put(url, ip_inst, ip_inst->url);
         else
-            eviction->put(url, ip_inst->size, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id, "NA");
+            //eviction->put(url, ip_inst->size, ip_inst->ts, ip_inst->bytes_out, ip_inst->customer_id, "NA");
+            eviction->put(url, ip_inst, "NA");
         number_of_writes += (ip_inst->size / number_of_bytes_per_write) + 1;
         return true;
     }
