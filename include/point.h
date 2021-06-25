@@ -1,5 +1,7 @@
 #include <vector>
 
+// Authored by Edward Xing 6/25/2021
+
 class Point {
   public:
     int key;

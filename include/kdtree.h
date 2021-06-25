@@ -1,8 +1,7 @@
-/*
- * Authored by Edward Xing 6/24/21
-*/
 #include "point.h"
 #include <queue>
+
+// Authored by Edward Xing 6/25/2021
 
 using namespace std;
 
@@ -27,6 +26,7 @@ class KDTree {
     Node* build(vector<Point*> data, int dim, int depth);
     void neighbor(unsigned int k, vector<double> origin, 
       Node* cur, priority_queue<pair<double, Point*>>& pq);
+    void destruct(Node* cur);
 
   public:
     KDTree(vector<Point*> data, int k);

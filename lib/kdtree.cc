@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <algorithm>
 
+// Authored by Edward Xing 6/25/2021
+
 using namespace std;
 
 KDTree::Node::Node(Point *val, Node *left, Node *right) {
@@ -13,8 +15,6 @@ KDTree::Node::Node(Point *val, Node *left, Node *right) {
 
 KDTree::Node::~Node() {
   delete this->value;
-  delete this->left;
-  delete this->right;
 };
 
 KDTree::KDTree(vector<Point*> data, int k) {
@@ -24,7 +24,14 @@ KDTree::KDTree(vector<Point*> data, int k) {
 }
 
 KDTree::~KDTree() {
-  delete this->root;
+  destruct(this->root);
+}
+
+void KDTree::destruct(Node* cur) {
+  if (!cur) return;
+  destruct(cur->left);
+  destruct(cur->right);
+  delete cur;
 }
 
 vector<Point*> KDTree::knn(unsigned int k, vector<double> origin) {

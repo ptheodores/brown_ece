@@ -6,6 +6,8 @@
 #include <cmath>
 #include <assert.h>
 
+// Authored by Edward Xing 6/25/2021
+
 using namespace std;
 
 Point::Point(vector<double> coordinates, int key) {
@@ -13,7 +15,9 @@ Point::Point(vector<double> coordinates, int key) {
     this->key = key;
 }
 
-Point::~Point() {}
+Point::~Point() {
+    this->coordinates.clear();
+}
 
 double Point::distanceTo(vector<double> coordinates) {
     double sum = 0;

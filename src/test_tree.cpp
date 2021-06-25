@@ -13,6 +13,7 @@ int main() {
   for (Point *p : ret) {
     cout << p->key << "\n";
   }
+  delete kd;
 
   return 0;
 }
