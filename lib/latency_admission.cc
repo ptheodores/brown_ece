@@ -53,12 +53,12 @@ void LatencyAdmission::periodic_output(unsigned long ts, std::ostringstream& out
 /***************************************************************/
 
 /* Prob. Size Based Admission */
-ProbSizeAdmission::ProbLatencyAdmission(unsigned long long c) {
+ProbLatencyAdmission::ProbLatencyAdmission(unsigned long long c) {
     name = "prob_lat";
     this->c = c;
 }
 
-ProbSizeAdmission::~ProbLatencyAdmission() {
+ProbLatencyAdmission::~ProbLatencyAdmission() {
 }
 
 // Should we let this in?

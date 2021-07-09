@@ -28,7 +28,7 @@ class LatencyAdmission : public CacheAdmission {
 class ProbLatencyAdmission : public CacheAdmission {
 
     public:
-        ProbLatencyAdmission(double lower, double upper);
+        ProbLatencyAdmission(unsigned long long c);
         ~ProbLatencyAdmission();
 
         bool check(std::string key, item_packet* ip_inst);
