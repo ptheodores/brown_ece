@@ -14,6 +14,8 @@
 //struct item_packet;
 #include "status.h"
 #include <string>
+#include <iostream>
+#include <fstream>
 #include "cache_policy.h"
 
 class Cache {
@@ -36,6 +38,7 @@ class Cache {
         unsigned long hit;
         unsigned long long byte_hit;
         unsigned long long reads_from_origin;
+        unsigned long latency_hit;
 
 
         // Storage book-keeping
@@ -53,6 +56,8 @@ class Cache {
         bool do_hourly_purging;
 
         bool respect_lower_admission;
+
+        std::ofstream output;
 
     public:
 
@@ -76,6 +81,7 @@ class Cache {
         unsigned long get_miss();
         unsigned long long get_hit_bytes();
         unsigned long long get_miss_bytes();
+        unsigned long get_latency_hit();
 
         unsigned long get_hm_local();
         unsigned long get_hit_total();

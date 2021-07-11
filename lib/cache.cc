@@ -42,6 +42,7 @@ Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
     byte_miss = 0;
     hit = 0;
     byte_hit = 0;
+    latency_hit = 0;
     reads_from_origin = 0;
 
     admission = NULL;
@@ -61,10 +62,12 @@ Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
 
     size_of_purges = 0;
     coordinates = {0, 0, 0};
+    output.open("hit.txt");
 }
 
 Cache::~Cache()
 {
+    output.close();
 }
 
 /* Set the admission and eviction policies */
@@ -121,6 +124,10 @@ bool Cache::process(item_packet* ip_inst){
         // Hit!
         hit++;
         byte_hit += ip_inst->size;
+        if (ip_inst->rtt >= 25 && ip_inst->rtt <= 75) {
+            latency_hit++;
+        }
+        output << hit << "\n";
 
         // Ok so it was a hit here, cache it above
         return true;
@@ -195,6 +202,9 @@ unsigned long long Cache::get_hit_bytes() {
 }
 unsigned long long Cache::get_miss_bytes() {
     return byte_miss;
+}
+unsigned long Cache::get_latency_hit() {
+    return latency_hit;
 }
 
 /* Get the number of hits + misses at this cache */
