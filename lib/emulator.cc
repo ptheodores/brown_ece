@@ -483,7 +483,7 @@ int Emulator::process_access_log_line(string log_line) {
                 csp_inst->traffic += ip_inst.size;
 
                 // Call out to the head cache object
-                head->process(&ip_inst);
+                pick_server(&ip_inst)->process(&ip_inst);
                 // Logging stuff
                 execute_periodic_functions(&ip_inst);
 
