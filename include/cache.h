@@ -13,6 +13,7 @@
 
 //struct item_packet;
 #include "status.h"
+#include <string>
 class CacheAdmission;
 class CacheEviction;
 //#include "cache_policy.h"
