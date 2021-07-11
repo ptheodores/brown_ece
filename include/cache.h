@@ -27,6 +27,9 @@ class Cache {
         // The next one in the chain!
         Cache* next;
 
+        // cache location
+        std::vector<double> coordinates;
+
         // Local Logging
         unsigned long miss;
         unsigned long long byte_miss;
@@ -81,6 +84,8 @@ class Cache {
         unsigned long long get_hit_bytes_total();
 
         unsigned long long get_origin_reads_total();
+
+        std::vector<double> get_coordinates();
 
         // Setters
         void clear_counters();

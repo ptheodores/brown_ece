@@ -10,6 +10,8 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
 
 #include "status.h"
 #include "bloomfilter.h"
@@ -306,7 +308,7 @@ void Emulator::set_front_end_mode() {
 
 /* Given a new cache object, add it to the tail*/
 void Emulator::add_to_tail(Cache* new_cache){
-
+    static int key = 0;
     // If this is the first one, just set it
     if (tail == NULL) {
         // Set the tail, zero out next
@@ -322,8 +324,16 @@ void Emulator::add_to_tail(Cache* new_cache){
     new_cache->set_next(NULL);
     // Scoot the tail down
     tail = new_cache;
-
+    
+    servers[key] = new_cache;
+    this->points.push_back(new Point(new_cache->get_coordinates(), key++));
     return;
+}
+
+Cache* Emulator::pick_server(item_packet* ip_inst) {
+    srand(time(NULL));
+    int upper = servers.size();
+    return servers[rand() % upper];
 }
 
 /* 

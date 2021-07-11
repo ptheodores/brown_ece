@@ -11,6 +11,7 @@
 #ifndef EMULATOR_H_
 #define EMULATOR_H_
 #include "cache.h"
+#include "point.h"
 
 class ReportingVariables;
 class EmConfItems;
@@ -90,6 +91,12 @@ class Emulator{
         bool partial_object_caching;
         bool front_end_mode;
 
+        // Stores all servers
+        std::unordered_map<int, Cache*> servers;
+        std::vector<Point*> points;
+
+        // pick server
+        Cache* pick_server(item_packet* ip_inst);
 };
 
 #endif /* EMULATOR_H_ */
