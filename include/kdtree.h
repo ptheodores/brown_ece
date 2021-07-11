@@ -1,5 +1,6 @@
 #include "point.h"
 #include <queue>
+#include "uthash.h"
 
 // Authored by Edward Xing 6/25/2021
 
