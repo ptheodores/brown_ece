@@ -14,7 +14,6 @@
 #include "status.h"
 #include "bloomfilter.h"
 #include "em_structs.h"
-#include "cache.h"
 #include "emulator.h"
 
 using namespace std;

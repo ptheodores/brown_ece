@@ -10,8 +10,8 @@
 
 #ifndef EMULATOR_H_
 #define EMULATOR_H_
+#include "cache.h"
 
-class Cache;
 class ReportingVariables;
 class EmConfItems;
 
