@@ -69,12 +69,6 @@ int main(int argc, char *argv[]) {
     em->populate_access_log_cache();
     /**************************/
 
-    auto lh = hd->get_latency_hit();
-    // auto total = hd->get_hm_local();
-
-    cerr << lh << "\n";
-    cerr << hd->get_hit() << "\n";
-
     delete kc;
     delete kc_ad;
     delete kc_evict;

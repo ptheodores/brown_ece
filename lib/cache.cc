@@ -127,7 +127,6 @@ bool Cache::process(item_packet* ip_inst){
         if (ip_inst->rtt >= 25 && ip_inst->rtt <= 75) {
             latency_hit++;
         }
-        output << hit << "\n";
 
         // Ok so it was a hit here, cache it above
         return true;
@@ -146,7 +145,7 @@ Cache* Cache::get_next() {
 /* Dump periodic cache info */
 void Cache::periodic_output(unsigned long ts, ostringstream& outlogfile) {
 
-    float hitrate, bytehitrate;
+    float hitrate, bytehitrate, latency_rate;
 
     // Output stuff that is generic, all cache track
     outlogfile << " |\tcache ";
@@ -154,6 +153,7 @@ void Cache::periodic_output(unsigned long ts, ostringstream& outlogfile) {
     // Compute hit rate and bytehit rate first
     if ((get_hm_local()) > 0){
         hitrate = (float) (get_hit()) / (float) (get_hm_local());
+        latency_rate = (float) (get_latency_hit()) / (float) (get_hm_local());
     } else {
         hitrate = 0;
     }
@@ -181,6 +181,8 @@ void Cache::periodic_output(unsigned long ts, ostringstream& outlogfile) {
     admission->periodic_output(ts, outlogfile);
     // Call the eviction
     eviction->periodic_output(ts, outlogfile);
+
+    output << latency_rate << "\n";
 
     // Clear the local cache counters 
     clear_counters();
@@ -260,6 +262,7 @@ unsigned long long Cache::get_origin_reads_total() {
 
 /* Just blow away the stuff */
 void Cache::clear_counters() {
+    latency_hit = 0;
     hit = 0;
     miss = 0;
     byte_hit = 0;
