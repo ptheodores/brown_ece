@@ -215,9 +215,9 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 
     // Parse the config lines
     sci->command_line_parser(argc, argv);
-    if (strcmp(argv[0], "matching_rtt")) {
-		log_adjust = 1;
-    }
+    //if (argc >= 2 && strcmp(argv[1], "matching_rtt")) {	
+	//	log_adjust = 1;
+    //}
     // Dump out the conf items 
     sci->print_em_conf_items();
     // If debug is on, harp a little so we are warned about how much comes out
