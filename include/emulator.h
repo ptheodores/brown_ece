@@ -97,6 +97,7 @@ class Emulator{
 
         // pick server
         Cache* pick_server(item_packet* ip_inst);
+        int log_adjust = 0;
 };
 
 #endif /* EMULATOR_H_ */

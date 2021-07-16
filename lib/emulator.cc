@@ -215,6 +215,9 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 
     // Parse the config lines
     sci->command_line_parser(argc, argv);
+    if (strcmp(argv[0], "matching_rtt")) {
+		log_adjust = 1;
+    }
     // Dump out the conf items 
     sci->print_em_conf_items();
     // If debug is on, harp a little so we are warned about how much comes out
@@ -256,6 +259,10 @@ Emulator::Emulator(string input_config_file, ostream &output_file,
 
     // Parse the config file
     sci->config_file_parser(input_config_file);
+	//if (strcmp(argv[0], "matching_rtt")) {
+	//	log_adjust = 1;
+    //}
+
     // Dump out the conf items 
     sci->print_em_conf_items();
     // If debug is on, harp a little so we are warned about how much comes out
@@ -367,27 +374,32 @@ int Emulator::process_access_log_line(string log_line) {
             return 0;
         }
 
+		
+		if (log_adjust) {
+        	ip_inst.ip_addr = vecSpltLine.at(1);
+        }
+
         // Make sure it has a valid size. If not, go ahead and skip it 
         // 3 -- size
         // 7 -- total bytes out
 
         //cout << log_line << endl;
 
-        if (!isdigit(vecSpltLine.at(1).c_str()[0]) || !isdigit(vecSpltLine.at(4).c_str()[0])) {
+        if (!isdigit(vecSpltLine.at(1 + log_adjust).c_str()[0]) || !isdigit(vecSpltLine.at(4).c_str()[0])) {
             return 0; // not valid size OR byte value
         }
 
 
         // Save the size and total byes out
-        ip_inst.size = atol(vecSpltLine.at(1).c_str());
-        ip_inst.bytes_out = atol(vecSpltLine.at(4).c_str());
+        ip_inst.size = atol(vecSpltLine.at(1 + log_adjust).c_str());
+        ip_inst.bytes_out = atol(vecSpltLine.at(4 + log_adjust).c_str());
         // If no size is set, just take size to the the bytes out
         if (ip_inst.size == 0) {
             ip_inst.size = ip_inst.bytes_out; // to compensate for the chunk encoding issue (where size is '-')
         }
 
         // Get the status code
-        ip_inst.status_code_full = vecSpltLine.at(3);
+        ip_inst.status_code_full = vecSpltLine.at(3 + log_adjust);
 
         // Populate status code info
         set_status_string_and_code(ip_inst.status_code_full,
@@ -410,12 +422,12 @@ int Emulator::process_access_log_line(string log_line) {
         }
 
         // Take the url
-        ip_inst.url = vecSpltLine.at(5);
+        ip_inst.url = vecSpltLine.at(5 + log_adjust);
         ip_inst.customer_id = "NA";
 
 		//added to store rtt and region
-		ip_inst.rtt = atol(vecSpltLine.at(6).c_str());
-		ip_inst.region = atoi(vecSpltLine.at(7).c_str());
+		ip_inst.rtt = atol(vecSpltLine.at(6 + log_adjust).c_str());
+		ip_inst.region = atoi(vecSpltLine.at(7 + log_adjust).c_str());
 
         // EMULATOR LOGIC BEGINS
         // This basically catches anyhting that passed data through

@@ -20,6 +20,7 @@ struct item_packet {
     int status_code_number;
     unsigned long rtt;
     unsigned int region;
+	std::string ip_addr;
 };
 
 struct cache_stat_packet {
