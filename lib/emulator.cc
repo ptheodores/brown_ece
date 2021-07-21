@@ -215,8 +215,11 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 
     // Parse the config lines
     sci->command_line_parser(argc, argv);
-    if (argc >= 2 && strcmp(argv[1], "matching_rtt")) {	
+    if (argc >= 2 && (strcmp(argv[1], "mod_matching_rtt") || strcmp(argv[1], "matching_rtt"))) {	
 		log_adjust = 1;
+    }
+    if (argc >= 2 && strncmp(argv[2], "mod_", 4)) {
+		modded_logs = 1;
     }
     // Dump out the conf items 
     sci->print_em_conf_items();
@@ -385,7 +388,7 @@ int Emulator::process_access_log_line(string log_line) {
 
         //cout << log_line << endl;
 
-        if (!isdigit(vecSpltLine.at(1 + log_adjust).c_str()[0]) || !isdigit(vecSpltLine.at(4).c_str()[0])) {
+        if (!isdigit(vecSpltLine.at(1 + log_adjust).c_str()[0]) || !isdigit(vecSpltLine.at(4 + log_adjust).c_str()[0])) {
             return 0; // not valid size OR byte value
         }
 
@@ -425,9 +428,11 @@ int Emulator::process_access_log_line(string log_line) {
         ip_inst.url = vecSpltLine.at(5 + log_adjust);
         ip_inst.customer_id = "NA";
 
-		//added to store rtt and region
-		ip_inst.rtt = atol(vecSpltLine.at(6 + log_adjust).c_str());
-		ip_inst.region = atoi(vecSpltLine.at(7 + log_adjust).c_str());
+		if (modded_logs) {
+			//added to store rtt and region
+			ip_inst.rtt = atol(vecSpltLine.at(6 + log_adjust).c_str());
+			ip_inst.region = atoi(vecSpltLine.at(7 + log_adjust).c_str());
+		}
 
         // EMULATOR LOGIC BEGINS
         // This basically catches anyhting that passed data through
