@@ -562,6 +562,9 @@ void Emulator::populate_access_log_cache() {
 
     output << "\nBegin reading access logs through pipe...";
 
+    // create kd tree
+    this->tree = new KDTree(this->points, 2)
+
     // Master loop which processes line by line action. Basically the whole
     // system is an event replayer and the access logs are just playing 
     // back a series of events, and the majority of the work goes into
