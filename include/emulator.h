@@ -11,7 +11,6 @@
 #ifndef EMULATOR_H_
 #define EMULATOR_H_
 #include "cache.h"
-#include "point.h"
 #include "kdtree.h"
 
 class ReportingVariables;
