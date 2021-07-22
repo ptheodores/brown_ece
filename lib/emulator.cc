@@ -212,13 +212,18 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
                      int argc, char *argv[]):output(output_file)
     {
     sci = new EmConfItems();
+	output << "first emulator constructor. argc:" << argc << " argv 0: " << argv[0] << endl;
 
     // Parse the config lines
     sci->command_line_parser(argc, argv);
-    if (argc >= 2 && (strcmp(argv[1], "mod_matching_rtt") || strcmp(argv[1], "matching_rtt"))) {	
+    //output << argv[1] << endl;
+    if (argc >= 2 && ((strcmp(argv[1], "mod_matching_rtt") == 0) || (strcmp(argv[1], "matching_rtt") == 0))) {	
+    	output << "log _adjust is 1" << endl;
 		log_adjust = 1;
     }
-    if (argc >= 2 && strncmp(argv[2], "mod_", 4)) {
+    if (argc >= 2 && (strncmp(argv[1], "mod_", 4) == 0)) {
+    	output << "modded_logs is 1" << endl;
+
 		modded_logs = 1;
     }
     // Dump out the conf items 
@@ -259,6 +264,7 @@ Emulator::Emulator(string input_config_file, ostream &output_file,
                      bool partial_object):output(output_file)
     {
     sci = new EmConfItems();
+	output << "second emulator constructor" << endl;
 
     // Parse the config file
     sci->config_file_parser(input_config_file);
@@ -374,6 +380,7 @@ int Emulator::process_access_log_line(string log_line) {
 
         // Discard events that happened before the end of our cache mgr dump
         if (ip_inst.ts < csp_inst->initial_cache_dump_last_ts) {
+        	//output << "error 1" << endl;
             return 0;
         }
 
@@ -389,6 +396,12 @@ int Emulator::process_access_log_line(string log_line) {
         //cout << log_line << endl;
 
         if (!isdigit(vecSpltLine.at(1 + log_adjust).c_str()[0]) || !isdigit(vecSpltLine.at(4 + log_adjust).c_str()[0])) {
+        
+        /*	output << "error 2:" << endl;
+        	output << log_adjust << endl;
+        	output << vecSpltLine.at(1 + log_adjust).c_str() << "\n" << 
+        	vecSpltLine.at(4 + log_adjust).c_str() << endl;
+        */
             return 0; // not valid size OR byte value
         }
 
@@ -414,12 +427,14 @@ int Emulator::process_access_log_line(string log_line) {
         if (front_end_mode == true) {
             if (ip_inst.status_code_string.compare("CONFIG_NOCACHE") == 0) {
                 cout << "bad cache status:" << ip_inst.status_code_string <<  endl;
+				//output << "error 3" << endl;
                 return 0;
             }
         }
         /* otherwise, check for None, it means there was an issue */
         else {
             if (ip_inst.status_code_string.compare("CONFIG_NOCACHE") == 0 || ip_inst.status_code_string.compare("NONE") == 0) {
+            	//output << "error 4" << endl;
                 return 0;
             }
         }
@@ -542,6 +557,7 @@ void Emulator::populate_access_log_cache() {
     unsigned long long lines_processed = 0; // access log entry contained a valid cache key
     unsigned long long lines_unprocessed = 0;// access log entry contained NO valid cache key
     unsigned long long lines_skipped = 0;
+    unsigned long long lines_uncertain = 0;
     item_packet ip_inst; //Item packet we will use for each iteration
 
     output << "\nBegin reading access logs through pipe...";
@@ -553,13 +569,16 @@ void Emulator::populate_access_log_cache() {
     ip_inst = item_packet();
     string curr_line;
     int ret_val;
-
+	//int i = 0;
     while (getline(cin, curr_line))
     {
+    //	output << "processing line" << i << endl;
+    //	i++;
         ret_val = process_access_log_line(curr_line);
 
         if (ret_val == 0) {
             // Not sure...
+            lines_uncertain++;
         } else if (ret_val == 1) {
             lines_unprocessed++;
         } else if (ret_val == 2) {
@@ -569,9 +588,10 @@ void Emulator::populate_access_log_cache() {
         }
     }
 
-    output << "\n\nlines_processed " << lines_processed << " lines_unprocessed "
+    output << "\n\nlines_processed: " << lines_processed << " lines_unprocessed: "
         << lines_unprocessed
-        << " lines_skipped (e.g. different status code)" << lines_skipped
+        << " lines_skipped (e.g. different status code): " << lines_skipped
+        << " lines uncertain: " << lines_uncertain
         << endl;
     output << "Reading access logs through pipe complete." << endl;
 

@@ -17,8 +17,7 @@ function run_test()
     
     for i in $LIST_OF_TS; do
         gunzip -c $LOGDIR/*$i*.gz | sort -n
-    done | $executable > $RUNDIR/$BINNAME.dat
-    
+    done | $executable "$2" > $RUNDIR/$BINNAME.dat 
     echo "Finished $executable"
 }
 
@@ -26,7 +25,8 @@ function run_test()
 
 if [[ $# -lt 2 ]] ; then
     echo -e 'Usage:\n\trun_sim.sh <log dir> <exp_bin...>'
-    echo -e "\nTo use the provided sample logs and default Least Recently Used, Second Hit Caching simulator, \n use 'input_request_sequence' as the log_dir and '$(dirname $0)/bin/lru_2hc' as the experiment binary."
+    echo -e "\nTo use the provided sample logs and default Least Recently Used, Second Hit Caching simulator, \n 
+    	use 'input_request_sequence' as the log_dir and '$(dirname $0)/bin/lru_2hc' as the experiment binary."
     exit 0
 fi
 

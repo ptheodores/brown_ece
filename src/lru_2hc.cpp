@@ -25,6 +25,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     cout << "\nExecutable: \t" << argv[0] << "\n";
+    cout << "\nArgc: \t" << argc << "\n";
+    //cout << "\nLogdir: \t" << argv[1] << "\n";
 
     Emulator* em = new Emulator(cout, false, argc, argv);
 
@@ -88,4 +90,5 @@ int main(int argc, char *argv[]) {
     delete em;
 
     return 0;
+
 }
