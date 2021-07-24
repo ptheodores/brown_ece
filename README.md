@@ -89,6 +89,56 @@ examples of how to parse the output format. Please note, this script requires ma
 5. Bytes out (bytes served from the requested file, could be smaller in case of range requests)
 6. URL (asset requested)
 
+Some files have different layouts. The emulator is equipped to read each of the given logs. 
+Modifications to the logs can be made using the log_mod.py script.
+
+The folder "matching_rtt" has:
+
+1. Timestamp
+2. IPv4 or IPv6 address
+3. Size
+4. Destination port (e.g. 80 or 443) - unused column
+5. Cache status code (e.g.: TCP_HIT/200, TCP_HIT/206 TCP_MISS/200, TCP_PARTIAL_HIT/200, etc.)
+6. Bytes out (bytes served from the requested file, could be smaller in case of range requests)
+7. URL (asset requested)
+
+Those that have the prefix "mod_" have:
+
+1. Timestamp
+2. Size
+3. Destination port (e.g. 80 or 443) - unused column
+4. Cache status code (e.g.: TCP_HIT/200, TCP_HIT/206 TCP_MISS/200, TCP_PARTIAL_HIT/200, etc.)
+5. Bytes out (bytes served from the requested file, could be smaller in case of range requests)
+6. URL (asset requested)
+7. RTT (round-trip time, randomized double chosen uniformly over (10,100)
+8. Region (randomized integer over {0,1}
+
+Those that have the prefix "log_" have:
+
+1. Timestamp
+2. IPv4 or IPv6 address
+3. Size
+4. Destination port (e.g. 80 or 443) - unused column
+5. Cache status code (e.g.: TCP_HIT/200, TCP_HIT/206 TCP_MISS/200, TCP_PARTIAL_HIT/200, etc.)
+6. Bytes out (bytes served from the requested file, could be smaller in case of range requests)
+7. URL (asset requested)
+8. Longitude (derived from IPv4 or IPv6 address, using the GeoIP2 City database)
+9. Latitude (derived from IPv4 or IPv6 address, using the GeoIP2 City database)
+ 
+Those that have the prefix "log_mod" have:
+
+1. Timestamp
+2. IPv4 or IPv6 address
+3. Size
+4. Destination port (e.g. 80 or 443) - unused column
+5. Cache status code (e.g.: TCP_HIT/200, TCP_HIT/206 TCP_MISS/200, TCP_PARTIAL_HIT/200, etc.)
+6. Bytes out (bytes served from the requested file, could be smaller in case of range requests)
+7. URL (asset requested)
+8. RTT (round-trip time, randomized double chosen uniformly over (10,100)
+9. Region (randomized integer over {0,1}
+10. Longitude (derived from IPv4 or IPv6 address, using the GeoIP2 City database)
+11. Latitude (derived from IPv4 or IPv6 address, using the GeoIP2 City database)
+
 * Output is stored in a .dat file (e.g. `out/29_Nov_17-18_54/lru_2hc.dat`).
 
 Below is an example of the dat file entry:

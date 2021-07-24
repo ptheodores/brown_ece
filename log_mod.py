@@ -4,6 +4,10 @@
 
 import random, sys, errno, os, gzip
 import geoip2.database
+import geoip2.errors
+import maxminddb
+#import geoip2.webservice.Client
+#import geoip2.webservice.AsyncClient
 
 
 
@@ -22,13 +26,19 @@ def add_args(fout, line, mode):
 				response = reader.city(ip_addr)	
 				args_to_add += " " + str(response.location.latitude) + " " + str(response.location.longitude)
 				#print(ip_addr + args_to_add)
+			#except FileNotFoundError:
+			#	print("File not found.")
+			#	exit()
+			#except maxminddb.InvalidDatabaseError:
+			#	print("Invalid Database Error")
+			#	exit()
 			except ValueError:
 				print(line.split()[1] + "is not a valid IP address")
 				args_to_add += " 0 + 0"
-			except AddressNotFoundError:
-				print("Address " + line.split()[1] + " not found!")
+			except:
+				print("IP address yielded an unexpected error") 
 				args_to_add += " 0 + 0"
-	
+				
 		#write to line
 		args_to_add += '\n'
 		fout.write(line.replace('\n', args_to_add))

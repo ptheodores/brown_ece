@@ -217,7 +217,10 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
     // Parse the config lines
     sci->command_line_parser(argc, argv);
     //output << argv[1] << endl;
-    if (argc >= 2 && ((strcmp(argv[1], "mod_matching_rtt") == 0) || (strcmp(argv[1], "matching_rtt") == 0))) {	
+    if (argc >= 2 && ((strcmp(argv[1], "mod_matching_rtt") == 0) 
+    		|| (strcmp(argv[1], "matching_rtt") == 0) 
+    			|| (strcmp(argv[1], "loc_matching_rtt") == 0)
+    				|| (strcmp(argv[1], "loc_mod_matching_rtt") == 0))) {	
     	output << "log _adjust is 1" << endl;
 		log_adjust = 1;
     }
@@ -226,6 +229,25 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 
 		modded_logs = 1;
     }
+
+	if (argc >= 2 && (strncmp(argv[1], "loc_mod_", 8) == 0)) {
+    	output << "modded_logs is 1" << endl;
+		output << "location_logs is 1" << endl;
+
+		modded_logs = 1;
+		location_logs = 1;
+    }
+
+	if (argc >= 2 
+		&& (strncmp(argv[1], "loc_", 4) == 0) 
+			&& !(strncmp(argv[1], "loc_mod_", 8) == 0)) {
+    	
+    	output << "location_logs is 1" << endl;
+		location_logs = 1;
+    }
+
+    
+
     // Dump out the conf items 
     sci->print_em_conf_items();
     // If debug is on, harp a little so we are warned about how much comes out
@@ -397,11 +419,11 @@ int Emulator::process_access_log_line(string log_line) {
 
         if (!isdigit(vecSpltLine.at(1 + log_adjust).c_str()[0]) || !isdigit(vecSpltLine.at(4 + log_adjust).c_str()[0])) {
         
-        /*	output << "error 2:" << endl;
+        	/*output << "emulator error 2:" << endl;
         	output << log_adjust << endl;
         	output << vecSpltLine.at(1 + log_adjust).c_str() << "\n" << 
-        	vecSpltLine.at(4 + log_adjust).c_str() << endl;
-        */
+        	vecSpltLine.at(4 + log_adjust).c_str() << endl;*/
+        
             return 0; // not valid size OR byte value
         }
 
@@ -427,14 +449,14 @@ int Emulator::process_access_log_line(string log_line) {
         if (front_end_mode == true) {
             if (ip_inst.status_code_string.compare("CONFIG_NOCACHE") == 0) {
                 cout << "bad cache status:" << ip_inst.status_code_string <<  endl;
-				//output << "error 3" << endl;
+				//output << "emulator error 3" << endl;
                 return 0;
             }
         }
         /* otherwise, check for None, it means there was an issue */
         else {
             if (ip_inst.status_code_string.compare("CONFIG_NOCACHE") == 0 || ip_inst.status_code_string.compare("NONE") == 0) {
-            	//output << "error 4" << endl;
+            	//output << "emulator error 4" << endl;
                 return 0;
             }
         }
@@ -443,11 +465,21 @@ int Emulator::process_access_log_line(string log_line) {
         ip_inst.url = vecSpltLine.at(5 + log_adjust);
         ip_inst.customer_id = "NA";
 
+		int next_to_read = 6 + log_adjust;
+
 		if (modded_logs) {
 			//added to store rtt and region
 			ip_inst.rtt = atol(vecSpltLine.at(6 + log_adjust).c_str());
 			ip_inst.region = atoi(vecSpltLine.at(7 + log_adjust).c_str());
+			next_to_read = next_to_read + 2;
 		}
+
+		
+		if (location_logs) {
+			ip_inst.longitude = atol(vecSpltLine.at(next_to_read).c_str());
+			ip_inst.latitude = atol(vecSpltLine.at(next_to_read + 1).c_str());
+		}
+
 
         // EMULATOR LOGIC BEGINS
         // This basically catches anyhting that passed data through

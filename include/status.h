@@ -21,6 +21,8 @@ struct item_packet {
     unsigned long rtt;
     unsigned int region;
 	std::string ip_addr;
+	long longitude;
+	long latitude;
 };
 
 struct cache_stat_packet {
