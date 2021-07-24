@@ -60,7 +60,7 @@ Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
     this->respect_lower_admission = respect_lower_admission;
 
     size_of_purges = 0;
-    coordinates = {0, 0, 0};
+    coordinates = {0, 0};
 }
 
 Cache::~Cache()

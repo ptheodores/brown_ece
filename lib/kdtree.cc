@@ -76,7 +76,7 @@ KDTree::Node* KDTree::build(vector<Point*> data, int dim, int depth) {
 
 void KDTree::neighbor(unsigned int k, vector<double> origin, 
   Node* cur, priority_queue<pair<double, Point*>>& pq) {
-    if (!cur) return;
+    if (!cur || !k) return;
 
     int d = cur->depth % this->dimensions;
     Point* p = cur->value;
@@ -91,7 +91,7 @@ void KDTree::neighbor(unsigned int k, vector<double> origin,
 
     Node *go, *other;
 
-    if (origin[d] > cur->value->coordinates[d]) {
+    if (origin[d] > p->coordinates[d]) {
       go = cur->right;
       other = cur->left;
     } else {
