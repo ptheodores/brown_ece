@@ -373,8 +373,8 @@ Cache* Emulator::pick_server(item_packet* ip_inst) {
     int upper = servers.size();
     if (location_logs) {
     	//TODO: more intelligent server choice
-    	ip_inst->latitude
-    	ip_inst->longitude
+    	ip_inst->latitude;
+    	ip_inst->longitude;
 		return servers[0];
     } else {
     	return servers[rand() % upper];
