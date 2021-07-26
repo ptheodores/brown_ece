@@ -371,7 +371,14 @@ void Emulator::add_to_tail(Cache* new_cache){
 Cache* Emulator::pick_server(item_packet* ip_inst) {
     srand(time(NULL));
     int upper = servers.size();
-    return servers[rand() % upper];
+    if (location_logs) {
+    	//TODO: more intelligent server choice
+    	ip_inst->latitude
+    	ip_inst->longitude
+		return servers[0];
+    } else {
+    	return servers[rand() % upper];
+    }
 }
 
 /* 
