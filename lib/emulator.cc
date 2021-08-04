@@ -373,9 +373,11 @@ Cache* Emulator::pick_server(item_packet* ip_inst) {
     int upper = servers.size();
     if (location_logs) {
     	//TODO: more intelligent server choice
-    	ip_inst->latitude;
-    	ip_inst->longitude;
-		return servers[0];
+    	vector<double> request_origin (2);
+    	request_origin[0] = ip_inst->latitude;
+    	request_origin[1] = ip_inst->longitude;
+    	vector<Point *> closest_point =  this->tree->knn(1, request_origin);
+		return servers[closest_point[0]->key];
     } else {
     	return servers[rand() % upper];
     }
