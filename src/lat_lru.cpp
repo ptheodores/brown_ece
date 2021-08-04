@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
     Cache* kc = new Cache(0, // Unused
                           false, // Hourly purging?
                           false, // Respect admission of lower?
-                          kc_max_size_gig // Size
-                         );
+                          kc_max_size_gig, // Size
+                         0,0);
     CacheAdmission* kc_ad = new NullAdmission();
     CacheEviction* kc_evict = new LRUEviction(kc_max_size_bytes, "h", em->sci);
     kc->set_admission(kc_ad);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
 
     // Let's make a hard drive
-    Cache* hd = new Cache(0, false, false, hd_max_size_gig);
+    Cache* hd = new Cache(0, false, false, hd_max_size_gig, 0, 0);
     CacheAdmission* hd_ad = new LatencyAdmission(25, 75);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* hd_evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);

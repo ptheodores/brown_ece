@@ -31,7 +31,7 @@ using namespace std;
 
 Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
               bool respect_lower_admission,
-              unsigned long long size)
+              unsigned long long size, double longitude, double latitude)
 {
     next = NULL;
 
@@ -60,7 +60,7 @@ Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
     this->respect_lower_admission = respect_lower_admission;
 
     size_of_purges = 0;
-    coordinates = {0, 0};
+    coordinates = {longitude, latitude};
 }
 
 Cache::~Cache()

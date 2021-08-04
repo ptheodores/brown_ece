@@ -57,7 +57,8 @@ class Cache {
     public:
 
         Cache (bool store_access_line_and_url, bool do_hourly_purging,
-               bool respect_lower_admission, unsigned long long size);
+               bool respect_lower_admission, unsigned long long size, 
+               double longitude, double latitude);
         ~Cache();
 
         // Setup Interfaces
