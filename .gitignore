@@ -12,3 +12,4 @@ logs/
 out/
 *.eps
 *.pdf
+out/latest
