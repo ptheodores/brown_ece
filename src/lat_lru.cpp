@@ -30,26 +30,11 @@ int main(int argc, char *argv[]) {
     ossf << rand();
 
     // Some reused parameters
-
-    unsigned long long kc_max_size_gig = em->sci->kc_gig;
     unsigned long long hd_max_size_gig = em->sci->hd_gig;
-    unsigned long long kc_max_size_bytes = kc_max_size_gig *1024*1024*1024;
     unsigned long long hd_max_size_bytes = hd_max_size_gig *1024*1024*1024;
 
     string kc_file_name = string(ossf.str() + ".kcbf");
     string hd_file_name = string(ossf.str() + ".bf");
-
-    // Let's make a k-kache
-    Cache* kc = new Cache(0, // Unused
-                          false, // Hourly purging?
-                          false, // Respect admission of lower?
-                          kc_max_size_gig, // Size
-                         0,0);
-    CacheAdmission* kc_ad = new NullAdmission();
-    CacheEviction* kc_evict = new LRUEviction(kc_max_size_bytes, "h", em->sci);
-    kc->set_admission(kc_ad);
-    kc->set_eviction(kc_evict);
-
 
     // Let's make a hard drive
     Cache* hd = new Cache(0, false, false, hd_max_size_gig, 0, 0);
@@ -68,10 +53,6 @@ int main(int argc, char *argv[]) {
     /**************************/
     em->populate_access_log_cache();
     /**************************/
-
-    delete kc;
-    delete kc_ad;
-    delete kc_evict;
 
     delete hd;
     delete hd_ad;

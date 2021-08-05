@@ -341,8 +341,10 @@ Emulator::~Emulator() {
     output << endl 	<< "Start time: " << start_time_str
         << "End time:   " << end_time_str << endl;
 
+    delete csp_inst;
     delete sci;
     delete rv_inst;
+    delete this->tree;
 }
 
 void Emulator::set_front_end_mode() {

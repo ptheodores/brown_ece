@@ -74,8 +74,12 @@ LRUEviction::LRUEviction(unsigned long long size, string id, const EmConfItems *
 
 LRUEviction::~LRUEviction()
 {
-    delete head;
-    delete tail;
+    LRUEvictionEntry* cur = head;
+    while (cur) {
+        auto temp = cur;
+        cur = cur->next;
+        delete temp;
+    }
 }
 
 
