@@ -618,7 +618,7 @@ void Emulator::populate_access_log_cache() {
     this->tree = new KDTree(this->points, 2);
 
 	//set up counter to know how many requests per server there are
-    vector<double> v(servers.size(), 0);
+    vector<unsigned long long> v(servers.size(), 0);
 	this->requests_per_server = v;
 	unsigned int i;
 	

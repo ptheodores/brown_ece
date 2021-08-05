@@ -98,7 +98,7 @@ class Emulator{
 
         // pick server
         Cache* pick_server(item_packet* ip_inst);
-        std::vector<double> requests_per_server;
+        std::vector<unsigned long long> requests_per_server;
         int log_adjust = 0;
         int modded_logs = 0;
         int location_logs = 0;
