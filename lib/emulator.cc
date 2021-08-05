@@ -216,11 +216,16 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 
     // Parse the config lines
     sci->command_line_parser(argc, argv);
+
+    bool need_adjust = false;
+    vector<string> names {"mod_matching_rtt", "matching_rtt", "loc_matching_rtt", "loc_mod_matching_rtt"};
+    for (auto& name : names) {
+        // compare argv[1] to each name in names
+        need_adjust |= !strncmp(argv[1], name.c_str(), name.size());
+    }
+
     //output << argv[1] << endl;
-    if (argc >= 2 && ((strcmp(argv[1], "mod_matching_rtt") == 0) 
-    		|| (strcmp(argv[1], "matching_rtt") == 0) 
-    			|| (strcmp(argv[1], "loc_matching_rtt") == 0)
-    				|| (strcmp(argv[1], "loc_mod_matching_rtt") == 0))) {	
+    if (argc >= 2 && need_adjust) {	
     	output << "log _adjust is 1" << endl;
 		log_adjust = 1;
     }

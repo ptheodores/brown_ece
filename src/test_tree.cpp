@@ -3,19 +3,28 @@
 
 using namespace std;
 
+void print(vector<Point*> v) {
+  for (auto p : v) {
+    cout << p->key << "\n";
+  }
+}
+
 int main() {
   int passed = 0;
   int failed = 0;
 
-  vector<Point*> v;
+  vector<Point*> vec;
   for (int i = 0; i < 10; i++) {
     double c = i;
-    v.push_back(new Point({c, c}, i));
+    vec.push_back(new Point({c, c}, i));
   }
-  KDTree* kd = new KDTree(v, 3);
+
+  // copy vec for testing since KDTree constructor will manipulate list
+  vector<Point*> v(vec);
+  KDTree* kd = new KDTree(vec, 2);
 
   vector<Point*> t1 = kd->knn(11, {0, 0});
-  if (t1 == v && v.size() == 10) {
+  if (t1 == v && t1.size() == 10 && kd->size() == 10) {
     passed++;
   } else {
     cout << "Case 1 failed!\n";
@@ -60,11 +69,12 @@ int main() {
     failed++;
   }
 
+  // in tie cases knn is stable
   vector<int> t6;
   for (auto& p : kd->knn(3, {3, 5})) {
     t6.push_back(p->key);
   }
-  vector<int> e6 {4, 5, 3};
+  vector<int> e6 {4, 3, 5};
   if (t6 == e6) {
     passed++;
   } else {
@@ -72,8 +82,9 @@ int main() {
     failed++;
   }
 
-  KDTree* kd2 = new KDTree({}, 3);
-  if (t5 == kd2->knn(3, {3, 5})) {
+  v.clear();
+  KDTree* kd2 = new KDTree(v, 2);
+  if (t5 == kd2->knn(3, {3, 5}) && kd2->size() == 0) {
     passed++;
   } else {
     cout << "Case 7 failed!\n";

@@ -22,15 +22,16 @@ class KDTree {
   private:
     Node *root;
     int dimensions;
-    int size;
+    int size_;
     
-    Node* build(vector<Point*> data, int dim, int depth);
+    Node* build(vector<Point*>& data, int dim, int depth);
     void neighbor(unsigned int k, vector<double> origin, 
       Node* cur, priority_queue<pair<double, Point*>>& pq);
     void destruct(Node* cur);
 
   public:
-    KDTree(vector<Point*> data, int k);
+    KDTree(vector<Point*>& data, int k);
     ~KDTree();
+    int size();
     vector<Point*> knn(unsigned int k, vector<double> origin);
 };

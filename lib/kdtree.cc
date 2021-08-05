@@ -17,9 +17,9 @@ KDTree::Node::~Node() {
   delete this->value;
 };
 
-KDTree::KDTree(vector<Point*> data, int k) {
+KDTree::KDTree(vector<Point*>& data, int k) {
   this->dimensions = k;
-  this->size = data.size();
+  this->size_ = data.size();
   this->root = this->build(data, k, 0);
 }
 
@@ -32,6 +32,10 @@ void KDTree::destruct(Node* cur) {
   destruct(cur->left);
   destruct(cur->right);
   delete cur;
+}
+
+int KDTree::size() {
+  return this->size_;
 }
 
 vector<Point*> KDTree::knn(unsigned int k, vector<double> origin) {
@@ -55,8 +59,8 @@ vector<Point*> subvector(int start, int end, vector<Point*> v) {
   return ret;
 }
 
-KDTree::Node* KDTree::build(vector<Point*> data, int dim, int depth) {
-  if (data.size() == 0) {
+KDTree::Node* KDTree::build(vector<Point*>& data, int dim, int depth) {
+  if (data.empty()) {
     return nullptr;
   }
   int d = depth % dim;
