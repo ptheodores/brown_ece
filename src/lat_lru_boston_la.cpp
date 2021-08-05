@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 
     Emulator* em = new Emulator(cout, false, argc, argv);
 
+
     // Some random seeding work
     srand(time(NULL));
     ostringstream ossf;
@@ -52,6 +53,9 @@ int main(int argc, char *argv[]) {
 
 
     // Let's make a hard drive
+	cout << "Server 0 in Boston" << "\n";
+	cout << "Server 1 in LA" << "\n";
+
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
     Cache* la = new Cache(0, false, false, hd_max_size_gig, 34.0522, 118.2437);
     
