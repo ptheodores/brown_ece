@@ -15,7 +15,7 @@ int main() {
   KDTree* kd = new KDTree(v, 3);
 
   vector<Point*> t1 = kd->knn(11, {0, 0});
-  if (t1 == v) {
+  if (t1 == v && v.size() == 10) {
     passed++;
   } else {
     cout << "Case 1 failed!\n";
