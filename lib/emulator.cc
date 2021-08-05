@@ -368,7 +368,7 @@ void Emulator::add_to_tail(Cache* new_cache){
     return;
 }
 
-Cache* Emulator::pick_server(item_packet* ip_inst, vector<double> &requests_per_server) {
+Cache* Emulator::pick_server(item_packet* ip_inst) {
     srand(time(NULL));
     int upper = servers.size();
     if (location_logs) {
@@ -377,11 +377,11 @@ Cache* Emulator::pick_server(item_packet* ip_inst, vector<double> &requests_per_
     	request_origin[0] = ip_inst->latitude;
     	request_origin[1] = ip_inst->longitude;
     	vector<Point *> closest_point =  this->tree->knn(1, request_origin);
-    	requests_per_server[closest_point[0]->key] = requests_per_server[closest_point[0]->key] + 1;
+    	this->requests_per_server[closest_point[0]->key] += 1;
 		return servers[closest_point[0]->key];
     } else {
     	int key = rand() % upper;
-    	requests_per_server[key] = requests_per_server[key] + 1;
+    	this->requests_per_server[key] += 1;
     	return servers[key];
     }
 }
@@ -391,7 +391,7 @@ Cache* Emulator::pick_server(item_packet* ip_inst, vector<double> &requests_per_
  * Process a single log line
  *
  */
-int Emulator::process_access_log_line(string log_line, vector<double> &requests_per_server) {
+int Emulator::process_access_log_line(string log_line) {
     item_packet ip_inst; //Item packet we will use for each iteration
     ip_inst = item_packet();
     ip_inst.line = log_line;
@@ -560,7 +560,7 @@ int Emulator::process_access_log_line(string log_line, vector<double> &requests_
                 csp_inst->traffic += ip_inst.size;
 
                 // Call out to the head cache object
-                pick_server(&ip_inst, requests_per_server)->process(&ip_inst);
+                pick_server(&ip_inst)->process(&ip_inst);
                 // Logging stuff
                 execute_periodic_functions(&ip_inst);
 
@@ -611,11 +611,9 @@ void Emulator::populate_access_log_cache() {
     this->tree = new KDTree(this->points, 2);
 
 	//set up counter to know how many requests per server there are
-	vector<double> requests_per_server (servers.size());
+    vector<double> v(servers.size(), 0);
+	this->requests_per_server = v;
 	unsigned int i;
-	for (i = 0; i < servers.size(); i++) {
-		requests_per_server[i] = 0;
-	}
 	
 
     // Master loop which processes line by line action. Basically the whole
@@ -631,7 +629,7 @@ void Emulator::populate_access_log_cache() {
     {
     //	output << "processing line" << i << endl;
     //	i++;
-        ret_val = process_access_log_line(curr_line, requests_per_server);
+        ret_val = process_access_log_line(curr_line);
 
         if (ret_val == 0) {
             // Not sure...
@@ -654,7 +652,7 @@ void Emulator::populate_access_log_cache() {
 
     output << "Dumping final info..." << endl;
     for (i = 0; i < servers.size(); i++) {
-    	output << "Server " << (i + 1) << " has had " << requests_per_server[i] << " requests" << endl;
+    	output << "Server " << (i + 1) << " has had " << this->requests_per_server[i] << " requests" << endl;
     }
    // DOn't do one final report
     //emulator_periodic_reporting(&ip_inst);

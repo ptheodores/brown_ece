@@ -77,7 +77,7 @@ class Emulator{
         time_t start_time;
 
         // Functions to Drive the Emulation
-        int process_access_log_line(std::string log_line, vector<double> &requests_per_server);
+        int process_access_log_line(std::string log_line);
         void populate_access_log_cache();
 
         std::ostream &output;
@@ -97,7 +97,8 @@ class Emulator{
         KDTree* tree;
 
         // pick server
-        Cache* pick_server(item_packet* ip_inst, vector<double>  &requests_per_server);
+        Cache* pick_server(item_packet* ip_inst);
+        std::vector<double> requests_per_server;
         int log_adjust = 0;
         int modded_logs = 0;
         int location_logs = 0;
