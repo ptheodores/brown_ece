@@ -32,6 +32,7 @@ The Edgecast Caching Emulator includes the following features.
 * **Cache Admission**
  * **N-hit caching**: items are cached on the n-th request
  * **Probabilistic caching**: items are cached based on a pre-defined probability value
+ * **Latency-sensitive caching**: items that are latency sensitive are cached to improve perceived quality of experience
 * **Cache Eviction**
  * **FIFO**: Items are purged in first-in-first-out order
  * **Regular LRU**: items are purged in a least recently used/requested fashion
@@ -52,9 +53,9 @@ Simply hop into the directory and run make:
 
 ``` make ```
 
-The Makefile will use clang++ by default, but you can override the default with another compiler of your choice:
+The Makefile will use g++ by default, but you can override the default with another compiler of your choice:
 
-``` CPP=g++ make ```
+``` CPP=clang++ make ```
 
 ## Usage
 
@@ -65,7 +66,7 @@ made example script will perform an example using Second-Hit Caching and LRU:
 ``` ./run_em.sh <log directory> ./bin/2hc_lru ```
 
 Where `<log directory>` is a directory containing logs of the appropriate
-format.  Sample logs are provided in the directory `input_request_sequence`.
+format.  Sample logs are provided in the directory `input_request_sequence`. For testing latency based policies and multiple server configurations, use `loc_matching_rtt`.
 
 Output will be placed in `out/<timestamp>`.
 
@@ -77,6 +78,7 @@ examples of how to parse the output format. Please note, this script requires ma
 * At the moment, the following policies are runnable from ./bin:
 1. lat_lru (latency admission, lru eviction)
 2. lru_2hc (second hit caching admission, lru eviction)
+3. lat_lru_boston_la (latency admission, lru eviction with two servers, one in la and one in boston)
 
 ### Data
 
