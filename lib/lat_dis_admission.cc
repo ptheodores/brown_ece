@@ -22,8 +22,8 @@ using namespace std;
 
 DistanceAdmission::DistanceAdmission(long double min, long double max, long double latitude, long double longitude) {
     name = "latency";
-    this->lower = lower;
-    this->upper = upper;
+    this->lower = min;
+    this->upper = max;
     this->latitude = latitude;
     this->longitude = longitude;
 }
@@ -41,6 +41,7 @@ bool DistanceAdmission::check(string key, item_packet* ip_inst) {
     //verbose: print latency at each check
     //cerr << "latency: " << ip_inst->rtt << "\n";
     long double dis = distance(this->latitude, this->longitude, ip_inst->latitude, ip_inst->longitude);
+    //cout << "Distance: " << dis << ", upper: " << upper << ", lower: " << lower << "\n";
     return dis <= this->upper && dis >= this->lower;
 }
 

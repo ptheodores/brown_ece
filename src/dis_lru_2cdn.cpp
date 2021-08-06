@@ -43,34 +43,34 @@ int main(int argc, char *argv[]) {
     string hd_file_name = string(ossf.str() + ".bf");
 
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
-    Cache* la = new Cache(0, false, false, hd_max_size_gig, 34.0522, 118.2437);
+    Cache* louisville = new Cache(0, false, false, hd_max_size_gig, 38.2527, 85.7585);
     
-    CacheAdmission* boston_ad = new DistanceAdmission(0, 1000, 42.3601, 71.0589);
+    CacheAdmission* boston_ad = new DistanceAdmission(12000, 15000, 42.3601, 71.0589);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* hd_evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     boston->set_admission(boston_ad);
     boston->set_eviction(hd_evict);
 
-    CacheAdmission* la_ad = new DistanceAdmission(0, 1000, 34.0522, 118.2437);
+    CacheAdmission* louisville_ad = new DistanceAdmission(10000, 14000, 38.2527, 85.7585);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
-    la->set_admission(la_ad);
-    la->set_eviction(evict);
+    louisville->set_admission(louisville_ad);
+    louisville->set_eviction(evict);
 
     /* Config the cache layers we made */
 
     em->add_to_tail(boston);
-	em->add_to_tail(la);
+	em->add_to_tail(louisville);
     // Run it
     /**************************/
     em->populate_access_log_cache();
     /**************************/
 
     delete boston;
-    delete la;
+    delete louisville;
 
     delete boston_ad;
-    delete la_ad;
+    delete louisville_ad;
     delete hd_evict;
 
     delete em;
