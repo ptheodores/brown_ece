@@ -21,7 +21,7 @@
 using namespace std;
 
 DistanceAdmission::DistanceAdmission(long double min, long double max, long double latitude, long double longitude) {
-    name = "distance";
+    name = "latency";
     this->lower = lower;
     this->upper = upper;
     this->latitude = latitude;
@@ -51,7 +51,7 @@ float DistanceAdmission::get_fill_percentage() {
 void DistanceAdmission::periodic_output(unsigned long ts, std::ostringstream& outlogfile){
     // Just output the marker and move on
     //not sure we are doing anything with this right now, but we have it as an option to use?
-    //outlogfile << " : " << name << " ";
+    outlogfile << " : " << name << " ";
 }
 
 
