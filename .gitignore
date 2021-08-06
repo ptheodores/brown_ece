@@ -13,3 +13,4 @@ out/
 *.eps
 *.pdf
 out/latest
+plot_data.txt
