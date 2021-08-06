@@ -207,10 +207,18 @@ void modify_cachekey(string & cachekey, string access_log_entry) {
  *
  ***************************************************/
 
+void initiate_plot() {
+    ofstream plot;
+    plot.open("plot_data.txt");
+    plot << "cache_key,name,interval,hitrate\n";
+    plot.close();
+}
+
 /* Instantiate everything we need */
 Emulator::Emulator(ostream &output_file, bool partial_object,
                      int argc, char *argv[]):output(output_file)
     {
+    initiate_plot();
     sci = new EmConfItems();
 	output << "first emulator constructor. argc:" << argc << " argv 0: " << argv[0] << endl;
 
@@ -290,6 +298,7 @@ Emulator::Emulator(ostream &output_file, bool partial_object,
 Emulator::Emulator(string input_config_file, ostream &output_file,
                      bool partial_object):output(output_file)
     {
+    initiate_plot();
     sci = new EmConfItems();
 	output << "second emulator constructor" << endl;
 
@@ -352,7 +361,7 @@ void Emulator::set_front_end_mode() {
 }
 
 /* Given a new cache object, add it to the tail*/
-void Emulator::add_to_tail(Cache* new_cache){
+void Emulator::add_to_tail(Cache* new_cache, string name){
     static int key = 0;
     // If this is the first one, just set it
     if (tail == NULL) {
@@ -370,16 +379,17 @@ void Emulator::add_to_tail(Cache* new_cache){
     // Scoot the tail down
     tail = new_cache;
     
+    new_cache->set_name(name);
+    new_cache->set_key(key);
     servers[key] = new_cache;
     this->points.push_back(new Point(new_cache->get_coordinates(), key++));
     return;
-}
+} 
 
 Cache* Emulator::pick_server(item_packet* ip_inst) {
     srand(time(NULL));
     int upper = servers.size();
     if (location_logs) {
-    	//TODO: more intelligent server choice
     	vector<double> request_origin (2);
     	request_origin[0] = ip_inst->latitude;
     	request_origin[1] = ip_inst->longitude;
@@ -566,7 +576,7 @@ int Emulator::process_access_log_line(string log_line) {
 
                 csp_inst->traffic += ip_inst.size;
 
-                // Call out to the head cache object
+                // send request to server
                 pick_server(&ip_inst)->process(&ip_inst);
                 // Logging stuff
                 execute_periodic_functions(&ip_inst);

@@ -56,7 +56,7 @@ class Emulator{
         void set_front_end_mode();
 
         // For adding new caches
-        void add_to_tail(Cache* new_cache);
+        void add_to_tail(Cache* new_cache, std::string name="");
 
         // This is the infinite cache with no evictions. Stored here in case we
         // Want to compare other protocols

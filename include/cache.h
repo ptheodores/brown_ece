@@ -14,6 +14,8 @@
 //struct item_packet;
 #include "status.h"
 #include <string>
+#include <iostream>
+#include <fstream>
 #include "cache_policy.h"
 
 class Cache {
@@ -29,6 +31,10 @@ class Cache {
 
         // cache location
         std::vector<double> coordinates;
+
+        // cache key and name
+        int key;
+        std::string name;
 
         // Local Logging
         unsigned long miss;
@@ -53,6 +59,10 @@ class Cache {
         bool do_hourly_purging;
 
         bool respect_lower_admission;
+
+        std::ofstream plot_data;
+
+        int output_count;
 
     public:
 
@@ -108,6 +118,9 @@ class Cache {
         // Reporting!
         void periodic_output(unsigned long ts, std::ostringstream& outlogfile);
         void hourly_purging(unsigned long ts);
+
+        void set_key(int key);
+        void set_name(std::string name);
 };
 
 

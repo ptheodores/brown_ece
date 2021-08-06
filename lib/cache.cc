@@ -61,10 +61,14 @@ Cache::Cache (bool store_access_line_and_url, bool do_hourly_purging,
 
     size_of_purges = 0;
     coordinates = {longitude, latitude};
+
+    this->output_count = 0;
+    this->plot_data.open("plot_data.txt", fstream::app);
 }
 
 Cache::~Cache()
 {
+    this->plot_data.close();
 }
 
 /* Set the admission and eviction policies */
@@ -136,14 +140,20 @@ Cache* Cache::get_next() {
     return next;
 }
 
+void Cache::set_key(int key) {
+    this->key = key;
+}
+
+void Cache::set_name(string name) {
+    this->name = name;
+}
+
 /* Dump periodic cache info */
 void Cache::periodic_output(unsigned long ts, ostringstream& outlogfile) {
-
     float hitrate, bytehitrate;
 
     // Output stuff that is generic, all cache track
     outlogfile << " |\tcache ";
-
     // Compute hit rate and bytehit rate first
     if ((get_hm_local()) > 0){
         hitrate = (float) (get_hit()) / (float) (get_hm_local());
@@ -174,6 +184,11 @@ void Cache::periodic_output(unsigned long ts, ostringstream& outlogfile) {
     admission->periodic_output(ts, outlogfile);
     // Call the eviction
     eviction->periodic_output(ts, outlogfile);
+    
+    this->plot_data << this->key << ",";
+    this->plot_data << "\"" << (name.size() ? name : to_string(key)) << "\",";
+    this->plot_data << this->output_count++ << ",";
+    this->plot_data << hitrate << "\n";
 
     // Clear the local cache counters 
     clear_counters();

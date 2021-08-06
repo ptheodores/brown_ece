@@ -21,6 +21,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     cout << "\nExecutable: \t" << argv[0] << "\n";
+    cout << "Server 0 in Boston" << "\n";
+	cout << "Server 1 in LA" << "\n";
 
     Emulator* em = new Emulator(cout, false, argc, argv);
 
@@ -38,11 +40,6 @@ int main(int argc, char *argv[]) {
     string kc_file_name = string(ossf.str() + ".kcbf");
     string hd_file_name = string(ossf.str() + ".bf");
 
-
-    // Let's make a hard drive
-	cout << "Server 0 in Boston" << "\n";
-	cout << "Server 1 in LA" << "\n";
-
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
     Cache* la = new Cache(0, false, false, hd_max_size_gig, 34.0522, 118.2437);
     
@@ -52,12 +49,14 @@ int main(int argc, char *argv[]) {
     boston->set_admission(hd_ad);
     boston->set_eviction(hd_evict);
 
-    la->set_admission(hd_ad);
-    la->set_eviction(hd_evict);
+    CacheAdmission* ad = new LatencyAdmission(25, 75);
+    //CacheAdmission* hd_ad = new NullAdmission();
+    CacheEviction* evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
+    la->set_admission(ad);
+    la->set_eviction(evict);
 
     /* Config the cache layers we made */
-    // TODO: KC disabled!
-    //em->add_to_tail(kc);
+
     em->add_to_tail(boston);
 	em->add_to_tail(la);
     // Run it
