@@ -12,6 +12,8 @@
 #include "null_admission.h"
 #include "lru_eviction.h"
 #include "fifo_eviction.h"
+#include "lat_dis_admission.h"
+
 
 using namespace std;
 /*
@@ -43,16 +45,16 @@ int main(int argc, char *argv[]) {
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
     Cache* la = new Cache(0, false, false, hd_max_size_gig, 34.0522, 118.2437);
     
-    CacheAdmission* hd_ad = new LatencyAdmission(25, 75);
+    CacheAdmission* boston_ad = new DistanceAdmission(100, 1000, 42.3601, 71.0589);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* hd_evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
-    boston->set_admission(hd_ad);
+    boston->set_admission(boston_ad);
     boston->set_eviction(hd_evict);
 
-    CacheAdmission* ad = new LatencyAdmission(25, 75);
+    CacheAdmission* la_ad = new DistanceAdmission(100, 1000, 34.0522, 118.2437);
     //CacheAdmission* hd_ad = new NullAdmission();
     CacheEviction* evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
-    la->set_admission(ad);
+    la->set_admission(la_ad);
     la->set_eviction(evict);
 
     /* Config the cache layers we made */
@@ -67,7 +69,8 @@ int main(int argc, char *argv[]) {
     delete boston;
     delete la;
 
-    delete hd_ad;
+    delete boston_ad;
+    delete la_ad;
     delete hd_evict;
 
     delete em;

@@ -126,6 +126,7 @@ def parse_emulator_log(log_file):
                 line_dict = {}
                 cache_chunks = clean_line.split("|")
                 # Loop through each of the chunks
+                #print(cache_chunks)
                 for index, cache in enumerate(cache_chunks):
                     key = cache.split()[0]
                     key, data = proc_cache_chunk(key, cache, index)
@@ -183,6 +184,8 @@ def main():
     #  Spin through the data files and parse each one, put the results in the
     # appropriate list
     for out_file, label in version_files:
+    	#print("out file: " + str(out_file))
+    	#print("label: " + str(label))
         # Parse the log, save the output
         log_out = parse_emulator_log(out_file)
         log_list.append(log_out)
