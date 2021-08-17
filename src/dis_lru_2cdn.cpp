@@ -23,8 +23,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     cout << "\nExecutable: \t" << argv[0] << "\n";
-    cout << "Server 0 in Boston" << "\n";
-	cout << "Server 1 in LA" << "\n";
+    cout << "Server 1 in Boston" << "\n";
+	cout << "Server 2 in Louisville" << "\n";
 
     Emulator* em = new Emulator(cout, false, argc, argv);
 
