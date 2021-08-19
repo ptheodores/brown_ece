@@ -38,9 +38,9 @@ int KDTree::size() {
   return this->size_;
 }
 
-vector<Point*> KDTree::knn(unsigned int k, vector<double> origin) {
+vector<Point*> KDTree::knn(unsigned int k, vector<double> origin, bool haversine) {
   priority_queue<pair<double, Point*>> pq;
-  this->neighbor(k, origin, this->root, pq);
+  this->neighbor(k, origin, this->root, pq, haversine);
   vector<Point*> ret(pq.size());
   
   int i = pq.size() - 1;
@@ -79,12 +79,12 @@ KDTree::Node* KDTree::build(vector<Point*>& data, int dim, int depth) {
 }
 
 void KDTree::neighbor(unsigned int k, vector<double> origin, 
-  Node* cur, priority_queue<pair<double, Point*>>& pq) {
+  Node* cur, priority_queue<pair<double, Point*>>& pq, bool haversine) {
     if (!cur || !k) return;
 
     int d = cur->depth % this->dimensions;
     Point* p = cur->value;
-    double dist = p->distanceTo(origin);
+    double dist = p->distanceTo(origin, haversine);
 
     if (pq.size() < k) {
       pq.push(make_pair(dist, p));
@@ -102,10 +102,10 @@ void KDTree::neighbor(unsigned int k, vector<double> origin,
       go = cur-> left;
       other = cur->right;
     }
-    this->neighbor(k, origin, go, pq);
+    this->neighbor(k, origin, go, pq, haversine);
 
     double axisDistance = origin[d] - p->coordinates[d];
     if (!pq.empty() && axisDistance <= pq.top().first) {
-      this->neighbor(k, origin, other, pq);
+      this->neighbor(k, origin, other, pq, haversine);
     }
   }

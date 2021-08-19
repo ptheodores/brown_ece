@@ -26,12 +26,12 @@ class KDTree {
     
     Node* build(vector<Point*>& data, int dim, int depth);
     void neighbor(unsigned int k, vector<double> origin, 
-      Node* cur, priority_queue<pair<double, Point*>>& pq);
+      Node* cur, priority_queue<pair<double, Point*>>& pq, bool haversine);
     void destruct(Node* cur);
 
   public:
     KDTree(vector<Point*>& data, int k);
     ~KDTree();
     int size();
-    vector<Point*> knn(unsigned int k, vector<double> origin);
+    vector<Point*> knn(unsigned int k, vector<double> origin, bool haversine=false);
 };

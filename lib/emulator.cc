@@ -393,7 +393,7 @@ Cache* Emulator::pick_server(item_packet* ip_inst) {
     	vector<double> request_origin (2);
     	request_origin[0] = ip_inst->latitude;
     	request_origin[1] = ip_inst->longitude;
-    	vector<Point *> closest_point =  this->tree->knn(1, request_origin);
+    	vector<Point *> closest_point =  this->tree->knn(1, request_origin, true);
     	this->requests_per_server[closest_point[0]->key] += 1;
 		return servers[closest_point[0]->key];
     } else {

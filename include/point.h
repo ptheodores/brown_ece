@@ -1,4 +1,5 @@
 #include <vector>
+#include "distance.h"
 
 // Authored by Edward Xing 6/25/2021
 
@@ -11,6 +12,6 @@ class Point {
     ~Point();
 
     // Calculates distance of point to other point using Euclidean distance
-    double distanceTo(std::vector<double> coordinates);
+    double distanceTo(std::vector<double> coordinates, bool haversine=false);
     int dimensions();
 };

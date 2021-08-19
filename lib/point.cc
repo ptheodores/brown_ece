@@ -5,7 +5,6 @@
 #include "point.h"
 #include <cmath>
 #include <assert.h>
-#include "distance.h"
 
 
 // Authored by Edward Xing 6/25/2021
@@ -21,15 +20,17 @@ Point::~Point() {
     this->coordinates.clear();
 }
 
-double Point::distanceTo(vector<double> coordinates) {
-    //double sum = 0;
-    //assert(coordinates.size() == this->coordinates.size());
-    //for (unsigned int i = 0; i < coordinates.size(); i++) {
-    //    sum += pow(coordinates[i] - this->coordinates[i], 2);
-    //}
-    //return sqrt(sum);
-    return distance(coordinates[1], coordinates[0], 
-    	this->coordinates[1], this->coordinates[0]);
+double Point::distanceTo(vector<double> coordinates, bool haversine) {
+    if (haversine) {
+        return distance(coordinates[1], coordinates[0], this->coordinates[1], this->coordinates[0]);
+    }
+
+    double sum = 0;
+    assert(coordinates.size() == this->coordinates.size());
+    for (unsigned int i = 0; i < coordinates.size(); i++) {
+       sum += pow(coordinates[i] - this->coordinates[i], 2);
+    }
+    return sqrt(sum);
 }
 
 int Point::dimensions() {
