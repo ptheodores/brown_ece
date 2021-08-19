@@ -63,52 +63,52 @@ int main(int argc, char *argv[]) {
 	Cache* ann_arbor = new Cache(0, false, false, hd_max_size_gig, 42.2808, 83.7430);
 	Cache* trenton = new Cache(0, false, false, hd_max_size_gig, 40.2206, 74.7597);
     
-    CacheAdmission* boston_ad = new DistanceAdmission(750, 5000, 42.3601, 71.0589);
+    CacheAdmission* boston_ad = new DistanceAdmission(0, 7500, 42.3601, 71.0589);
     CacheEviction* evict1 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     boston->set_admission(boston_ad);
     boston->set_eviction(evict1);
 
-    CacheAdmission* louisville_ad = new DistanceAdmission(10000, 14000, 38.2527, 85.7585);
+    CacheAdmission* louisville_ad = new DistanceAdmission(0, 7500, 38.2527, 85.7585);
     CacheEviction* evict2 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     louisville->set_admission(louisville_ad);
     louisville->set_eviction(evict2);
 
-    CacheAdmission* richmond_ad = new DistanceAdmission(10000, 14000, 37.5407, 77.4360);
+    CacheAdmission* richmond_ad = new DistanceAdmission(0, 7500, 37.5407, 77.4360);
     CacheEviction* evict3 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     richmond->set_admission(richmond_ad);
     richmond->set_eviction(evict3);
 
-	CacheAdmission* new_york_ad = new DistanceAdmission(500, 11000, 40.7128, 74.0060);
+	CacheAdmission* new_york_ad = new DistanceAdmission(0, 7500, 40.7128, 74.0060);
     CacheEviction* evict4 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     new_york->set_admission(new_york_ad);
     new_york->set_eviction(evict4);
 
-	CacheAdmission* houston_ad = new DistanceAdmission(500, 11000, 29.7604, 95.3698);
+	CacheAdmission* houston_ad = new DistanceAdmission(0, 7500, 29.7604, 95.3698);
     CacheEviction* evict5 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     houston->set_admission(houston_ad);
     houston->set_eviction(evict5);
 
-	CacheAdmission* tampa_ad = new DistanceAdmission(500, 11000, 27.9506, 82.4572);
+	CacheAdmission* tampa_ad = new DistanceAdmission(0, 7500, 27.9506, 82.4572);
     CacheEviction* evict6 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     tampa->set_admission(tampa_ad);
     tampa->set_eviction(evict6);
 
-	CacheAdmission* dc_ad = new DistanceAdmission(500, 11000, 38.9072, 77.0369);
+	CacheAdmission* dc_ad = new DistanceAdmission(0, 7500, 38.9072, 77.0369);
     CacheEviction* evict7 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     dc->set_admission(dc_ad);
     dc->set_eviction(evict7);
 
-	CacheAdmission* atlanta_ad = new DistanceAdmission(500, 11000, 33.7490, 84.3880);
+	CacheAdmission* atlanta_ad = new DistanceAdmission(0, 7500, 33.7490, 84.3880);
     CacheEviction* evict8 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     atlanta->set_admission(atlanta_ad);
     atlanta->set_eviction(evict8);
 
-	CacheAdmission* ann_arbor_ad = new DistanceAdmission(500, 11000, 42.2808, 83.7430);
+	CacheAdmission* ann_arbor_ad = new DistanceAdmission(0, 7500, 42.2808, 83.7430);
     CacheEviction* evict9 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     ann_arbor->set_admission(ann_arbor_ad);
     ann_arbor->set_eviction(evict9);
 
-	CacheAdmission* trenton_ad = new DistanceAdmission(500, 11000, 40.2206, 74.7597);
+	CacheAdmission* trenton_ad = new DistanceAdmission(0, 7500, 40.2206, 74.7597);
     CacheEviction* evict10 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     trenton->set_admission(trenton_ad);
     trenton->set_eviction(evict10);

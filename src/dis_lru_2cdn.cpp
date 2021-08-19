@@ -13,6 +13,7 @@
 #include "lru_eviction.h"
 #include "fifo_eviction.h"
 #include "lat_dis_admission.h"
+#include "second_hit_admission.h"
 
 
 using namespace std;
@@ -44,23 +45,33 @@ int main(int argc, char *argv[]) {
 
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
     Cache* louisville = new Cache(0, false, false, hd_max_size_gig, 38.2527, 85.7585);
-    
-    CacheAdmission* boston_ad = new DistanceAdmission(12000, 15000, 42.3601, 71.0589);
-    //CacheAdmission* hd_ad = new NullAdmission();
+   
+   CacheAdmission* boston_ad = new SecondHitAdmissionRot(hd_file_name, 5,
+                                                   50*1024*1024*8,
+                                                   em->sci->_NVAL,//2nd hit
+                                                   em->sci->no_bf_cust,
+                                                   em->sci->bf_reset_int);
+    //CacheAdmission* boston_ad = new DistanceAdmission(12000, 15000, 42.3601, 71.0589);
+    //CacheAdmission* boston_ad = new NullAdmission();
     CacheEviction* hd_evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     boston->set_admission(boston_ad);
     boston->set_eviction(hd_evict);
 
-    CacheAdmission* louisville_ad = new DistanceAdmission(10000, 14000, 38.2527, 85.7585);
-    //CacheAdmission* hd_ad = new NullAdmission();
+	CacheAdmission* louisville_ad = new SecondHitAdmissionRot(hd_file_name, 5,
+                                                   50*1024*1024*8,
+                                                   em->sci->_NVAL,//2nd hit
+                                                   em->sci->no_bf_cust,
+                                                   em->sci->bf_reset_int);
+    //CacheAdmission* louisville_ad = new DistanceAdmission(10000, 14000, 38.2527, 85.7585);
+    //CacheAdmission* louisville_ad = new NullAdmission();
     CacheEviction* evict = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     louisville->set_admission(louisville_ad);
     louisville->set_eviction(evict);
 
     /* Config the cache layers we made */
 
-    em->add_to_tail(boston);
-	em->add_to_tail(louisville);
+    em->add_to_tail(boston, "Boston, MA");
+	em->add_to_tail(louisville, "Louisville, KY");
     // Run it
     /**************************/
     em->populate_access_log_cache();

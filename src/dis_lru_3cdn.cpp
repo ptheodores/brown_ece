@@ -45,25 +45,36 @@ int main(int argc, char *argv[]) {
     string hd_file_name = string(ossf.str() + ".bf");
 
     Cache* boston = new Cache(0, false, false, hd_max_size_gig, 42.3601, 71.0589);
-    Cache* louisville = new Cache(0, false, false, hd_max_size_gig, 38.2527, 85.7585);
+	Cache* louisville = new Cache(0, false, false, hd_max_size_gig, 38.2527, 85.7585);
 	Cache* richmond = new Cache(0, false, false, hd_max_size_gig, 37.5407, 77.4360);
+	//Cache* new_york = new Cache(0, false, false, hd_max_size_gig, 40.7128, 74.0060);
 
-    
+    /*CacheAdmission* boston_ad = new SecondHitAdmissionRot(hd_file_name, 5,
+                                                   50*1024*1024*8,
+                                                   em->sci->_NVAL,//2nd hit
+                                                   em->sci->no_bf_cust,
+                                                   em->sci->bf_reset_int); */
     CacheAdmission* boston_ad = new DistanceAdmission(12000, 15000, 42.3601, 71.0589);
     CacheEviction* evict1 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     boston->set_admission(boston_ad);
     boston->set_eviction(evict1);
 
+	/*CacheAdmission* louisville_ad = new SecondHitAdmissionRot(hd_file_name, 5,
+                                                   50*1024*1024*8,
+                                                   em->sci->_NVAL,//2nd hit
+                                                   em->sci->no_bf_cust,
+                                                   em->sci->bf_reset_int);*/
     CacheAdmission* louisville_ad = new DistanceAdmission(10000, 14000, 38.2527, 85.7585);
     CacheEviction* evict2 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
     louisville->set_admission(louisville_ad);
     louisville->set_eviction(evict2);
 
-	/*CacheAdmission* richmond_ad = new DistanceAdmission(10000, 14000, 37.5407, 77.4360);
-	CacheEviction* evict3 = new LRUEviction(hd_max_size_bytes, "h", em->sci); 
-    louisville->set_admission(richmond_ad);
-    louisville->set_eviction(evict3);*/
+    /*CacheAdmission* new_york_ad = new DistanceAdmission(0, 7500, 40.7128, 74.0060);
+    CacheEviction* evict7 = new LRUEviction(hd_max_size_bytes, "h", em->sci);
+    new_york->set_admission(new_york_ad);
+    new_york->set_eviction(evict7);*/
 
+	
 	/*CacheAdmission* richmond_ad = new SecondHitAdmissionRot(hd_file_name, 5,
                                                    50*1024*1024*8,
                                                    em->sci->_NVAL,//2nd hit
@@ -79,6 +90,7 @@ int main(int argc, char *argv[]) {
     em->add_to_tail(boston, "Boston, MA");
 	em->add_to_tail(louisville, "Louisville, KY");
 	em->add_to_tail(richmond, "Richmond, VA");
+	//em->add_to_tail(new_york, "NYC, NY");
     // Run it
     /**************************/
     em->populate_access_log_cache();
@@ -86,6 +98,7 @@ int main(int argc, char *argv[]) {
 
     delete boston;
     delete louisville;
+    //delete new_york;
     delete richmond;
 
     delete boston_ad;
@@ -94,6 +107,8 @@ int main(int argc, char *argv[]) {
     delete evict2;
     delete richmond_ad;
     delete evict3;
+    //delete new_york_ad;
+    //delete evict7;
 
     delete em;
 
