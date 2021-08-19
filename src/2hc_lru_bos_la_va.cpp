@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     /* Config the cache layers we made */
 
     em->add_to_tail(boston, "Boston, MA");
-	  em->add_to_tail(la, "Los Angeles, CA");
+	em->add_to_tail(la, "Los Angeles, CA");
     em->add_to_tail(richmond, "Richmond, VA");
     // Run it
     /**************************/
